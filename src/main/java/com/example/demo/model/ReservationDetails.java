@@ -17,55 +17,51 @@ public class ReservationDetails {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotBlank
-	@Size(max = 40)
+	
 	private String username;
 	
-	@NotBlank
-	@Size(max = 10)
-	private String numberOfBooks;
 	
-	@NotBlank
-	@Size(max = 10)
-	private String numberOfVideos;
-	
-	@NotBlank
-	@Size(max = 10)
-	private String bookDurationDays;
-	
-	@NotBlank
-	@Size(max = 10)
-	private String videoDurationDays;
+	private int numberOfBooks;
 	
 	
-	@Size(max = 10)
-	private String bookCharges;
+	private int numberOfVideos;
 	
-	@NotBlank
-	@Size(max = 10)
-	private String videoCharges;
 	
-	@NotBlank
-	@Size(max = 10)
-	private String annualFee;
+	private int bookDurationDays;
 	
-	@NotBlank
-	@Size(max = 10)
-	private String overdur;
+	
+	private int videoDurationDays;
+	
+	
+	private int bookCharges;
+	
+	
+	private int videoCharges;
+	
+
+	private int annualFee;
+	
+	
+	private int overdur;
+	
+	
+	private int ongoingBookAmount;
+	
+	
+	private int ongoingVideoAmount;
 	
 
 	public ReservationDetails() {
 		
 	}
-
-
 	
 	
-	public ReservationDetails(String username, String numberOfBooks,
-			 String numberOfVideos,  String bookDurationDays,
-			String videoDurationDays,  String bookCharges,
-			 String videoCharges,  String annualFee,
-			 String overdur) {
+
+	public ReservationDetails(@NotBlank String username, @NotBlank @Size(max = 10) int numberOfBooks,
+			@NotBlank @Size(max = 10) int numberOfVideos, @NotBlank @Size(max = 10) int bookDurationDays,
+			@NotBlank @Size(max = 10) int videoDurationDays, @Size(max = 10) int bookCharges,
+			@NotBlank @Size(max = 10) int videoCharges, @NotBlank @Size(max = 10) int annualFee,
+			@NotBlank @Size(max = 10) int overdur) {
 		super();
 		this.username = username;
 		this.numberOfBooks = numberOfBooks;
@@ -77,7 +73,6 @@ public class ReservationDetails {
 		this.annualFee = annualFee;
 		this.overdur = overdur;
 	}
-
 
 
 
@@ -101,88 +96,85 @@ public class ReservationDetails {
 	}
 
 
-	public String getNumberOfBooks() {
+	
+	public int getNumberOfBooks() {
 		return numberOfBooks;
 	}
 
-
-	public void setNumberOfBooks(String numberOfBooks) {
+	public void setNumberOfBooks(int numberOfBooks) {
 		this.numberOfBooks = numberOfBooks;
 	}
 
-
-	public String getNumberOfVideos() {
+	public int getNumberOfVideos() {
 		return numberOfVideos;
 	}
 
-
-	public void setNumberOfVideos(String numberOfVideos) {
+	public void setNumberOfVideos(int numberOfVideos) {
 		this.numberOfVideos = numberOfVideos;
 	}
 
-
-	public String getBookDurationDays() {
+	public int getBookDurationDays() {
 		return bookDurationDays;
 	}
 
-
-	public void setBookDurationDays(String bookDurationDays) {
+	public void setBookDurationDays(int bookDurationDays) {
 		this.bookDurationDays = bookDurationDays;
 	}
 
-
-	public String getVideoDurationDays() {
+	public int getVideoDurationDays() {
 		return videoDurationDays;
 	}
 
-
-	public void setVideoDurationDays(String videoDurationDays) {
+	public void setVideoDurationDays(int videoDurationDays) {
 		this.videoDurationDays = videoDurationDays;
 	}
 
-
-	public String getBookCharges() {
+	public int getBookCharges() {
 		return bookCharges;
 	}
 
-
-	public void setBookCharges(String bookCharges) {
+	public void setBookCharges(int bookCharges) {
 		this.bookCharges = bookCharges;
 	}
 
-
-	public String getVideoCharges() {
+	public int getVideoCharges() {
 		return videoCharges;
 	}
 
-
-	public void setVideoCharges(String videoCharges) {
+	public void setVideoCharges(int videoCharges) {
 		this.videoCharges = videoCharges;
 	}
 
-
-	public String getAnnualFee() {
+	public int getAnnualFee() {
 		return annualFee;
 	}
 
-
-	public void setAnnualFee(String annualFee) {
+	public void setAnnualFee(int annualFee) {
 		this.annualFee = annualFee;
 	}
 
-
-	public String getOverdur() {
+	public int getOverdur() {
 		return overdur;
 	}
 
-
-	public void setOverdur(String overdur) {
+	public void setOverdur(int overdur) {
 		this.overdur = overdur;
 	}
 
-	
+	public int getOngoingBookAmount() {
+		return ongoingBookAmount;
+	}
 
+	public void setOngoingBookAmount(int ongoingBookAmount) {
+		this.ongoingBookAmount = ongoingBookAmount;
+	}
 
-	
+	public int getOngoingVideoAmount() {
+		return ongoingVideoAmount;
+	}
+
+	public void setOngoingVideoAmount(int ongoingVideoAmount) {
+		this.ongoingVideoAmount = ongoingVideoAmount;
+	}
 	
 }

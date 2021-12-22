@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 public class EmailSender {
@@ -29,6 +31,20 @@ public class EmailSender {
         javaMailSender.send(msg);
 
     }
+	 
+	 public void sendEmailContactUs(String email,String answer) {
+		 
+	        SimpleMailMessage msg = new SimpleMailMessage();
+	        msg.setTo("domsellanka@gmail.com",email);
+
+	        msg.setSubject("Answer for Problems");
+	        msg.setText(answer);
+
+	       
+	        
+	        javaMailSender.send(msg);
+
+	    }
 
     void sendEmailWithAttachment() throws MessagingException, IOException {
 

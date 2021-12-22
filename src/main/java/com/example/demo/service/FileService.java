@@ -6,23 +6,18 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import com.example.demo.model.Book;
 import com.example.demo.model.FileResponse;
+import com.example.demo.model.User;
 import com.example.demo.model.Video;
 import com.example.demo.repository.BookRepository;
 import com.example.demo.repository.FileRepository;
+import com.example.demo.repository.UserRepository;
 import com.example.demo.repository.VideoRepository;
 
 @Service
@@ -39,6 +34,9 @@ public class FileService {
 	
 	@Autowired
 	private BookRepository bookRepository;
+	
+	@Autowired
+	private UserRepository userRepository;
 	
 	public FileResponse uploadProfileImage(MultipartFile file,String user){
 		String fileName = fileStorageService.storeFile(file);
@@ -94,6 +92,20 @@ public class FileService {
 		return book;
 	}
 	
+	public User uploadProfileImageUser(MultipartFile file,String title){
+		String fileName = fileStorageService.storeFile(file);
+		String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+				.path("/api/auth/video/") 
+				.path(fileName)
+				.toUriString();
+		User user=userRepository.findUserByUsername(title);
+		//Video video = new Video(title, fileDownloadUri);
+		user.setImageOfProfile(fileDownloadUri);
+		userRepository.save(user);
+		System.out.println("profile pic is updated");
+		return user;
+	}
+	
 
 	public ResponseEntity<Resource> downloadFile( String fileName,HttpServletRequest request){
 		
@@ -114,6 +126,21 @@ public class FileService {
 		return ResponseEntity.ok()
 				.contentType(MediaType.parseMediaType(contentType))
 				.body(resource);
+	}
+
+
+	public User addProfilePicture(MultipartFile file, String title) {
+		String fileName = fileStorageService.storeFile(file);
+		String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+				.path("/api/auth/video/") 
+				.path(fileName)
+				.toUriString();
+		User user=userRepository.findByEmail(title);
+		//Video video = new Video(title, fileDownloadUri);
+		user.setImageOfProfile(fileDownloadUri);
+		userRepository.save(user);
+		System.out.println("profile pic is updated");
+		return user;
 	}
 	
 }

@@ -19,6 +19,9 @@ public class Video {
 	@Size(max = 40)
     private String category;
 	
+	@Size(max = 40)
+    private String ageLimitation;
+	
 	@NotBlank
 	@Size(max = 100)
     private String title;	
@@ -59,6 +62,14 @@ public class Video {
 
 
 
+
+	public String getAgeLimitation() {
+		return ageLimitation;
+	}
+
+	public void setAgeLimitation(String ageLimitation) {
+		this.ageLimitation = ageLimitation;
+	}
 
 	public String getImageOfVideo() {
 		return imageOfVideo;

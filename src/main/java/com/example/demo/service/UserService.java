@@ -1,20 +1,19 @@
 package com.example.demo.service;
 
 
-import java.util.HashSet;
+
 import java.util.List;
-import java.util.Set;
+
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import org.springframework.http.ResponseEntity;
+
 
 import com.example.demo.model.ERole;
 import com.example.demo.model.JwtResponse;
@@ -70,14 +69,19 @@ System.out.println("Hello");
 				 userDetails.getId(), 
 				 userDetails.getUsername(), 
 				 userDetails.getEmail(), 
-				 
-				 roles);
+				 roles,
+				 userDetails.getProfileImage());
 		
 		return jwtResponse;
 	}
 	
 	public List<User> getAllUsers(){
 		return userRepository.findAll();
+	}
+
+	public User uploadProfileDetails(User user1) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 

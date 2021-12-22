@@ -10,21 +10,19 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
 
 import com.example.demo.model.Book;
 import com.example.demo.model.FileResponse;
+import com.example.demo.model.MessageResponse;
+import com.example.demo.model.User;
 import com.example.demo.model.Video;
-import com.example.demo.repository.BookRepository;
-import com.example.demo.repository.FileRepository;
-import com.example.demo.repository.VideoRepository;
+
 import com.example.demo.service.FileService;
 import com.example.demo.service.FileStorageService;
 
@@ -36,14 +34,7 @@ public class FileController {
 	@Autowired
 	private FileStorageService fileStorageService;
 	
-	@Autowired
-	private FileRepository fileRepository;
 	
-	@Autowired
-	private VideoRepository videoRepository;
-	
-	@Autowired
-	private BookRepository bookRepository;
 	
 	@Autowired
 	private FileService fileService;
@@ -81,12 +72,7 @@ public class FileController {
 		return new ResponseEntity<Book>(book,HttpStatus.OK);
 	}
 	
-	@PostMapping("/addVideo")
-	public ResponseEntity<Video> upadateEmployee(@RequestBody Video video1){
 	
-	Video newVideoDetails=videoRepository.save(video1);
-		return ResponseEntity.ok(newVideoDetails);
-	}
 	
 	@GetMapping("image/{fileName:.+}")
 	public ResponseEntity<Resource> downloadFile(@PathVariable String fileName,HttpServletRequest request){
@@ -130,5 +116,22 @@ public class FileController {
 		return ResponseEntity.ok()
 				.contentType(MediaType.parseMediaType(contentType))
 				.body(resource);
+	}
+	
+	@PutMapping("/profileImage12")
+	public ResponseEntity<MessageResponse> uploadProfileImageUser(@RequestParam("file") MultipartFile file,@RequestParam("user") String title){
+		
+		User user=fileService.uploadProfileImageUser(file, title);
+		MessageResponse message=new MessageResponse("Profile Image is successfully updated.");
+		return new ResponseEntity<MessageResponse>(message,HttpStatus.OK);
+	}
+	
+	@PutMapping("/addProfilePicture")
+	public ResponseEntity<MessageResponse> addProfilePicture(@RequestParam("file") MultipartFile file,@RequestParam("user") String title){
+		System.out.println(" get file name"+file);
+		System.out.println(" get email"+title);
+		User user=fileService.addProfilePicture(file, title);
+		MessageResponse message=new MessageResponse("Profile Image is successfully updated.");
+		return new ResponseEntity<MessageResponse>(message,HttpStatus.OK);
 	}
 }

@@ -31,21 +31,20 @@ public class Book {
     private String author;
 	
 	
-    private String edition;
+
 	
 	
 	@Size(max = 30)
-    private String ISBNnumber;
+    private String inumber;
 	
-	@NotBlank
-	@Size(max = 1000)
-    private String price;
 	
 	@NotBlank
 	@Size(max = 20)
     private String numberOfCopies;
 
-	@NotBlank
+	@Size(max = 1000)
+	private String bookDescription;
+	
 	@Size(max = 50)
 	private String date;
 	
@@ -62,9 +61,18 @@ public class Book {
 		this.category = category;
 		this.title = title;
 		this.author = author;
-		this.edition = edition;
-		this.ISBNnumber = iSBNnumber;
-		this.price = price;
+		this.inumber = iSBNnumber;
+		this.numberOfCopies = numberOfCopies;
+		this.date=date;
+		this.message=message;
+	}
+	
+	public Book(String category, String title, String author, String iSBNnumber,  String numberOfCopies,String date,String message) {
+		
+		this.category = category;
+		this.title = title;
+		this.author = author;
+		this.inumber = iSBNnumber;
 		this.numberOfCopies = numberOfCopies;
 		this.date=date;
 		this.message=message;
@@ -74,8 +82,6 @@ public class Book {
 	{
 		
 	}
-	
-	
 	
 	public String getImageOfVideo() {
 		return imageOfVideo;
@@ -108,8 +114,6 @@ public class Book {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-
-	
 	
 	public String getDate() {
 		return date;
@@ -127,29 +131,14 @@ public class Book {
 		this.author = author;
 	}
 
-	public String getEdition() {
-		return edition;
+	public String getInumber() {
+		return inumber;
 	}
 
-	public void setEdition(String edition) {
-		this.edition = edition;
+	public void setInumber(String inumber) {
+		this.inumber = inumber;
 	}
 
-	public String getISBNnumber() {
-		return ISBNnumber;
-	}
-
-	public void setISBNnumber(String iSBNnumber) {
-		ISBNnumber = iSBNnumber;
-	}
-
-	public String getPrice() {
-		return price;
-	}
-
-	public void setPrice(String price) {
-		this.price = price;
-	}
 
 	public String getNumberOfCopies() {
 		return numberOfCopies;
@@ -165,6 +154,16 @@ public class Book {
 
 	public void setMessage(String message) {
 		this.message = message;
+	}
+	
+	
+
+	public String getBookDescription() {
+		return bookDescription;
+	}
+
+	public void setBookDescription(String bookDescription) {
+		this.bookDescription = bookDescription;
 	}
 
 	public BooleanSupplier isPresent() {

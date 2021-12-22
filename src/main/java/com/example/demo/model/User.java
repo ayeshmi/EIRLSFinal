@@ -44,7 +44,12 @@ public class User {
 				joinColumns = @JoinColumn(name = "user_id"), 
 				inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles = new HashSet<>();
-    
+	
+	@Size(max = 750)
+	private String imageOfProfile;
+	
+	
+
 	public User() {
 	}
 
@@ -64,7 +69,8 @@ public class User {
 		
 	}
 	
-	
+
+
 	public Long getId() {
 		return id;
 	}
@@ -89,7 +95,13 @@ public class User {
 		this.email = email;
 	}
 
-	
+	public String getImageOfProfile() {
+		return imageOfProfile;
+	}
+
+	public void setImageOfProfile(String imageOfProfile) {
+		this.imageOfProfile = imageOfProfile;
+	}
 	
 	public String getDateOfBirth() {
 		return dateOfBirth;
@@ -122,6 +134,8 @@ public class User {
 	public void setUserType(String userType) {
 		this.userType = userType;
 	}
+
+
 
 
 	
