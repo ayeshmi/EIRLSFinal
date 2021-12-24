@@ -1,6 +1,5 @@
 package com.example.demo.model;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,39 +9,48 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(name="video")
+@Table(name = "video")
 public class Video {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@Size(max = 40)
-    private String category;
-	
+	private String category;
+
 	@Size(max = 40)
-    private String ageLimitation;
-	
+	private String ageLimitation;
+
 	@NotBlank
 	@Size(max = 100)
-    private String title;	
-	
+	private String title;
+
 	@Size(max = 50)
 	private String date;
 
 	@Size(max = 500)
 	private String description;
-	
+
 	@Size(max = 750)
 	private String fileDownloadUri;
 	@Size(max = 750)
 	private String imageOfVideo;
 
-	public Video() {
-		
-	}
 	
-	public Video( String category, String title, String date,
-			 String description,  String fileDownloadUri) {
+	@Size(max = 60)
+	private String author;
+
+	private int year;
+
+	private int numberOfCopies;
+	
+	private int price;
+
+	public Video() {
+
+	}
+
+	public Video(String category, String title, String date, String description, String fileDownloadUri) {
 		super();
 		this.category = category;
 		this.title = title;
@@ -50,18 +58,12 @@ public class Video {
 		this.description = description;
 		this.fileDownloadUri = fileDownloadUri;
 	}
-	
-	
 
-	public Video(String title,String fileDownloadUri) {
+	public Video(String title, String fileDownloadUri) {
 		super();
 		this.title = title;
 		this.fileDownloadUri = fileDownloadUri;
 	}
-
-
-
-
 
 	public String getAgeLimitation() {
 		return ageLimitation;
@@ -126,6 +128,37 @@ public class Video {
 	public void setFileDownloadUri(String fileDownloadUri) {
 		this.fileDownloadUri = fileDownloadUri;
 	}
-	
-	
+
+	public String getAuthor() {
+		return author;
+	}
+
+	public void setAuthor(String author) {
+		this.author = author;
+	}
+
+	public int getYear() {
+		return year;
+	}
+
+	public void setYear(int year) {
+		this.year = year;
+	}
+
+	public int getNumberOfCopies() {
+		return numberOfCopies;
+	}
+
+	public void setNumberOfCopies(int numberOfCopies) {
+		this.numberOfCopies = numberOfCopies;
+	}
+
+	public int getPrice() {
+		return price;
+	}
+
+	public void setPrice(int price) {
+		this.price = price;
+	}
+
 }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.example.demo.dto.MessageResponse;
 import com.example.demo.model.Book;
 import com.example.demo.model.ContactUs;
 import com.example.demo.repository.ContactUsRepository;
@@ -25,11 +26,25 @@ public class ContactUsService {
 	
 	
 	public List<ContactUs> getAllContactUsDetails(){
-		return contactusRepository.findAll();
+		
+		List<ContactUs> requests=null;
+		try {
+			requests=contactusRepository.findAll();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return requests;
 	}
 	
-	public ContactUs addNewContactusDetails(ContactUs contactus) {
-		return contactusRepository.save(contactus);
+	public MessageResponse addNewContactusDetails(ContactUs contactus) {
+		try {
+			contactusRepository.save(contactus);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return new MessageResponse("ContactUs is successfully added!");
 	}
 	
 	public ContactUs getContactUsDetailsById(String id){

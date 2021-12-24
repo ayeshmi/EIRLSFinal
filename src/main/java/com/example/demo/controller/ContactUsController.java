@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 import com.example.demo.model.ContactUs;
-import com.example.demo.model.MessageResponse;
+import com.example.demo.dto.MessageResponse;
 import com.example.demo.repository.ContactUsRepository;
 import com.example.demo.service.ContactUsService;
 
@@ -34,29 +34,33 @@ public class ContactUsController {
 	ContactUsService contactusService;
 	
 	@GetMapping("/allConatctUs")
-	public List<ContactUs> getAllContactUsDetails(){
-		return contactusService.getAllContactUsDetails();
+	public ResponseEntity<Object> getAllContactUsDetails(){
+		List<ContactUs> contacts= contactusService.getAllContactUsDetails();
+		
+		if(contacts.size() != 0) {
+			return ResponseEntity.ok(contacts);
+		}
+		else {
+			MessageResponse message =new MessageResponse("No Records found!");
+			return ResponseEntity.badRequest().body(message);
+		}
 	}
 	
 
-	//create contactus details rest api
 	@PostMapping("/contactus")
-	public ResponseEntity<?> addNewContactusDetails(@RequestBody ContactUs contactus) {
+	public ResponseEntity<Object> addNewContactusDetails(@RequestBody ContactUs contactus) {
+MessageResponse message = contactusService.addNewContactusDetails(contactus);
 		
-		String dateBeforeString = "2017-05-24";
-		String dateAfterString = "2017-07-29";
-			
-		//Parsing the date
-		LocalDate dateBefore = LocalDate.parse(dateBeforeString);
-		LocalDate dateAfter = LocalDate.parse(dateAfterString);
-		//calculating number of days in between
-		long noOfDaysBetween = ChronoUnit.DAYS.between(dateBefore, dateAfter);
-			
-		//displaying the number of days
-		System.out.println(noOfDaysBetween);
+		if(message.getMessage().equals("ContactUs is successfully added!")) {
+			return ResponseEntity.ok(message);
+		}
+		else {
+			return ResponseEntity.badRequest().body(message);
+		}
+	
 		
-		 contactusService.addNewContactusDetails(contactus);
-		return ResponseEntity.ok(new MessageResponse("Contact Details Succesfully Sent!"));
+		 
+		
 	}
 	
 	@GetMapping("/contactus/{id}")

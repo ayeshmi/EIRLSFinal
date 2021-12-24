@@ -28,7 +28,7 @@ import com.example.demo.repository.PaymentRepository;
 import com.example.demo.service.EmailSender;
 import com.example.demo.model.User;
 import com.example.demo.dto.JwtResponse;
-import com.example.demo.model.MessageResponse;
+import com.example.demo.dto.MessageResponse;
 import com.example.demo.model.Paymentdto;
 import com.example.demo.model.ReservationDetails;
 import com.example.demo.dto.LoginRequest;

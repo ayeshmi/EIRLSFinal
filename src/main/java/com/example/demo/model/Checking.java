@@ -15,7 +15,7 @@ public class Checking {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long ID;
 	
-	private int num1;
+	private Long num1;
 	
 	private int num2;
 
@@ -27,11 +27,11 @@ public class Checking {
 		ID = iD;
 	}
 
-	public int getNum1() {
+	public Long getNum1() {
 		return num1;
 	}
 
-	public void setNum1(int num1) {
+	public void setNum1(Long num1) {
 		this.num1 = num1;
 	}
 

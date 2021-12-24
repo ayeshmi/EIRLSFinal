@@ -31,16 +31,15 @@ public class Book {
     private String author;
 	
 	
-
+    private Long inumber;
 	
+	private int numberOfPages;
 	
-	@Size(max = 30)
-    private String inumber;
+	private int year;
 	
-	
-	@NotBlank
-	@Size(max = 20)
-    private String numberOfCopies;
+    private int numberOfCopies;
+    
+    private int price;
 
 	@Size(max = 1000)
 	private String bookDescription;
@@ -55,7 +54,10 @@ public class Book {
 	@Size(max = 750)
 	private String imageOfVideo;
 	
-	public Book(Long id,  String category, String title, String author, String edition,String iSBNnumber,  String price,String numberOfCopies,String date,String message) {
+	@Size(max = 1000)
+	private String bookExcerpt ;
+	
+	public Book(Long id,  String category, String title, String author, String edition,Long iSBNnumber,  String price,int numberOfCopies,String date,String message) {
 		super();
 		this.id = id;
 		this.category = category;
@@ -67,7 +69,7 @@ public class Book {
 		this.message=message;
 	}
 	
-	public Book(String category, String title, String author, String iSBNnumber,  String numberOfCopies,String date,String message) {
+	public Book(String category, String title, String author, Long iSBNnumber,  int numberOfCopies,String date,String message) {
 		
 		this.category = category;
 		this.title = title;
@@ -131,20 +133,20 @@ public class Book {
 		this.author = author;
 	}
 
-	public String getInumber() {
+	public Long getInumber() {
 		return inumber;
 	}
 
-	public void setInumber(String inumber) {
+	public void setInumber(Long inumber) {
 		this.inumber = inumber;
 	}
 
 
-	public String getNumberOfCopies() {
+	public int  getNumberOfCopies() {
 		return numberOfCopies;
 	}
 
-	public void setNumberOfCopies(String numberOfCopies) {
+	public void setNumberOfCopies(int  numberOfCopies) {
 		this.numberOfCopies = numberOfCopies;
 	}
 
@@ -164,6 +166,38 @@ public class Book {
 
 	public void setBookDescription(String bookDescription) {
 		this.bookDescription = bookDescription;
+	}
+
+	public String getBookExcerpt() {
+		return bookExcerpt;
+	}
+
+	public void setBookExcerpt(String bookExcerpt) {
+		this.bookExcerpt = bookExcerpt;
+	}
+
+	public int getNumberOfPages() {
+		return numberOfPages;
+	}
+
+	public void setNumberOfPages(int numberOfPages) {
+		this.numberOfPages = numberOfPages;
+	}
+
+	public int getYear() {
+		return year;
+	}
+
+	public void setYear(int year) {
+		this.year = year;
+	}
+
+	public int getPrice() {
+		return price;
+	}
+
+	public void setPrice(int price) {
+		this.price = price;
 	}
 
 	public BooleanSupplier isPresent() {

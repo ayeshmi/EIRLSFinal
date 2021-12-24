@@ -23,7 +23,7 @@ public interface BookRepository extends JpaRepository<Book,Long>  , JpaSpecifica
 	@Query(value="select * from book b where b.title like %:keyword% or b.book_description like %:keyword% or b.author like %:keyword% or b.category like %:keyword%", nativeQuery = true)
 	List<Book> search(@Param("keyword")String a);
 	
-	Boolean existsByInumber(String inumber);
+	Boolean existsByInumber(Long inumber);
 
 	Boolean existsByTitle(String title);
 }

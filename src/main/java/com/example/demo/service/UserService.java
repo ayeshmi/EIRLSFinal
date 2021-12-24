@@ -16,6 +16,7 @@ import com.example.demo.dto.JwtResponse;
 import com.example.demo.dto.LoginRequest;
 import com.example.demo.model.User;
 import com.example.demo.model.UserDetailsImpl;
+import com.example.demo.model.Video;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.repository.ReservationRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -67,7 +68,14 @@ public class UserService {
 	}
 
 	public List<User> getAllUsers() {
-		return userRepository.findAll();
+
+		List<User> users = null;
+		try {
+			users = userRepository.findAll();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return users;
 	}
 
 	public User uploadProfileDetails(User user1) {

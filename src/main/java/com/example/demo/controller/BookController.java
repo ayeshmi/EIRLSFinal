@@ -3,7 +3,6 @@ package com.example.demo.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,9 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.dto.Bookdto;
 import com.example.demo.model.Book;
-import com.example.demo.model.MessageResponse;
+import com.example.demo.dto.MessageResponse;
 import com.example.demo.repository.BookRepository;
 import com.example.demo.service.BookService;
 
@@ -30,8 +28,17 @@ public class BookController {
 	BookService bookService;
 
 	@GetMapping("/books")
-	public List<Book> getAllBooks() {
-		return bookService.getAllBooks();
+	public ResponseEntity<Object> getAllBooks() {
+		List<Book> books=bookService.getAllBooks();
+		
+		if(books.size() != 0) {
+			return ResponseEntity.ok(books);
+		}
+		else {
+			MessageResponse message =new MessageResponse("No Records found!");
+			return ResponseEntity.badRequest().body(message);
+		}
+		
 	}
 
 	// get book by id rest api
@@ -88,33 +95,55 @@ public class BookController {
 
 	// adding new book
 	@PostMapping("/addbook")
-	public ResponseEntity<?> addbook(@RequestBody Bookdto book) {
-		System.out.println("Hello Book" + book.getInumber());
-		// bookService.addbook(book);
+	public ResponseEntity<Object> addbook(@RequestBody Book book) {
 		
-		//ResponseEntity<?> response = bookService.addbook(book);
-		return null;
+		MessageResponse message = bookService.addbook(book);
+		
+		if(message.getMessage().equals("Book is successfully registered!")) {
+			return ResponseEntity.ok(message);
+		}
+		else {
+			return ResponseEntity.badRequest().body(message);
+		}
+		
 	}
 
 	// get book by id rest api
 	@GetMapping("/book/{id}")
-	public ResponseEntity<Book> getBookById(@PathVariable String id) {
+	public ResponseEntity<Object> getBookById(@PathVariable Long id) {
 		Book book = bookService.getBookById(id);
-		return ResponseEntity.ok(book);
+		if(book != null) {
+			return ResponseEntity.ok(book);
+		}
+		else {
+			return ResponseEntity.badRequest().body(new MessageResponse("Selected Book is not exit!"));	
+		}
+		
 	}
 
 	@GetMapping("/searchBooks/{name}")
-	public ResponseEntity<List<Book>> searchVideo(@PathVariable("name") String specs) {
+	public ResponseEntity<Object> searchVideo(@PathVariable("name") String specs) {
 
-		return new ResponseEntity<>(bookService.advanceSearch(specs), HttpStatus.OK);
-		// System.out.println("hello1296");
+		
+		List<Book> books=bookService.advanceSearch(specs);
+		
+		if( books.size() != 0) {
+			return ResponseEntity.ok( books);
+		}
+		else {
+			MessageResponse message =new MessageResponse("No Records found!");
+			return ResponseEntity.badRequest().body(message);
+		}
 	}
 
 	@DeleteMapping("/deleteBook/{id}")
-	public ResponseEntity<?> deleteBook(@PathVariable Long id) {
-		bookService.deleteBook(id);
-
-		return ResponseEntity.ok(new MessageResponse("Successfully Deleted!"));
+	public ResponseEntity<Object> deleteBook(@PathVariable Long id) {
+		MessageResponse message =bookService.deleteBook(id);
+		if(message.getMessage().equals("Book is successfully deleted!")){
+			return ResponseEntity.ok(message);
+		}else {
+			return ResponseEntity.badRequest().body(new MessageResponse("Something went wrong, try again!"));
+		}
 
 	}
 

@@ -19,7 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.model.Book;
 import com.example.demo.model.FileResponse;
-import com.example.demo.model.MessageResponse;
+import com.example.demo.dto.MessageResponse;
 import com.example.demo.model.User;
 import com.example.demo.model.Video;
 
