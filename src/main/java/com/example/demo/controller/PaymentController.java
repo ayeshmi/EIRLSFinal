@@ -12,11 +12,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.model.Checking;
 import com.example.demo.model.MessageResponse;
 import com.example.demo.model.PaymentRequest;
 import com.example.demo.model.Paymentdto;
-import com.example.demo.model.SignupRequest;
+import com.example.demo.dto.SignupRequest;
 import com.example.demo.repository.PaymentRepository;
+import com.example.demo.repository.checkingRepository;
 
 @RestController
 
@@ -25,6 +27,9 @@ public class PaymentController {
 	
 	@Autowired
 	private PaymentRepository paymentRepository;
+	
+	@Autowired
+	private checkingRepository checkRepository;
 	
 	@GetMapping("/paymentDetails/{email}")
 	public Paymentdto  getPaymentDetailsByEmail(@PathVariable("email") String email) {
@@ -59,6 +64,14 @@ public class PaymentController {
 		System.out.println("Payment is added");
 		MessageResponse message = new MessageResponse("Check inputs and try again.");
 		return new ResponseEntity<>(message,HttpStatus.OK);
+	
+	}
+	
+	@PostMapping("/checking")
+	public void checking(@RequestBody Checking check) {
+		checkRepository.save(check);
+		System.out.println(""+check.getNum1());
+		
 	
 	}
 	

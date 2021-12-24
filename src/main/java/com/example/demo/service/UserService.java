@@ -1,7 +1,5 @@
 package com.example.demo.service;
 
-
-
 import java.util.List;
 
 import java.util.stream.Collectors;
@@ -14,14 +12,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-
-import com.example.demo.model.ERole;
-import com.example.demo.model.JwtResponse;
-import com.example.demo.model.LoginRequest;
-import com.example.demo.model.MessageResponse;
-import com.example.demo.model.ReservationDetails;
-import com.example.demo.model.Role;
-import com.example.demo.model.SignupRequest;
+import com.example.demo.dto.JwtResponse;
+import com.example.demo.dto.LoginRequest;
 import com.example.demo.model.User;
 import com.example.demo.model.UserDetailsImpl;
 import com.example.demo.repository.UserRepository;
@@ -33,49 +25,48 @@ import com.example.demo.repository.RoleRepository;
 public class UserService {
 	@Autowired
 	AuthenticationManager authenticationManager;
-	
+
 	@Autowired
 	JwtUtils jwtUtils;
-	
+
 	@Autowired
 	PasswordEncoder encoder;
-	
+
 	@Autowired
 	UserRepository userRepository;
-	
+
 	@Autowired
 	ReservationRepository reservationRepository;
-	
+
 	@Autowired
 	RoleRepository roleRepository;
 
 	@Autowired
 	EmailSender emailSender;
-	
+
 	public JwtResponse loginService(LoginRequest loginRequest) {
-		
-		Authentication authentication = authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(),loginRequest.getPassword()));
-System.out.println("Hello");
-		SecurityContextHolder.getContext().setAuthentication(authentication);
-		String jwt = jwtUtils.generateJwtToken(authentication);
-		
-		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();		
-		List<String> roles = userDetails.getAuthorities().stream()
-				.map(item -> item.getAuthority())
-				.collect(Collectors.toList());
-		
-		JwtResponse jwtResponse=new JwtResponse(jwt, 
-				 userDetails.getId(), 
-				 userDetails.getUsername(), 
-				 userDetails.getEmail(), 
-				 roles,
-				 userDetails.getProfileImage());
-		
+		JwtResponse jwtResponse = null;
+		try {
+			Authentication authentication = authenticationManager.authenticate(
+					new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+
+			SecurityContextHolder.getContext().setAuthentication(authentication);
+			String jwt = jwtUtils.generateJwtToken(authentication);
+
+			UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+			List<String> roles = userDetails.getAuthorities().stream().map(item -> item.getAuthority())
+					.collect(Collectors.toList());
+
+			jwtResponse = new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail(),
+					roles, userDetails.getProfileImage());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return jwtResponse;
 	}
-	
-	public List<User> getAllUsers(){
+
+	public List<User> getAllUsers() {
 		return userRepository.findAll();
 	}
 
@@ -83,8 +74,5 @@ System.out.println("Hello");
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
 
-	
-	
 }

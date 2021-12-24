@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.dto.Bookdto;
 import com.example.demo.model.Book;
 import com.example.demo.model.MessageResponse;
 import com.example.demo.repository.BookRepository;
@@ -87,11 +88,12 @@ public class BookController {
 
 	// adding new book
 	@PostMapping("/addbook")
-	public ResponseEntity<?> addbook(@RequestBody Book book) {
+	public ResponseEntity<?> addbook(@RequestBody Bookdto book) {
 		System.out.println("Hello Book" + book.getInumber());
 		// bookService.addbook(book);
-		ResponseEntity<?> response = bookService.addbook(book);
-		return response;
+		
+		//ResponseEntity<?> response = bookService.addbook(book);
+		return null;
 	}
 
 	// get book by id rest api

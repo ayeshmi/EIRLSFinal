@@ -1,4 +1,4 @@
-package com.example.demo.model;
+package com.example.demo.dto;
 import javax.validation.constraints.NotBlank;
 public class LoginRequest {
 	@NotBlank

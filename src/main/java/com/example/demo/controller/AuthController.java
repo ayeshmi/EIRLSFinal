@@ -27,12 +27,12 @@ import com.example.demo.repository.ReservationRepository;
 import com.example.demo.repository.PaymentRepository;
 import com.example.demo.service.EmailSender;
 import com.example.demo.model.User;
-import com.example.demo.model.JwtResponse;
+import com.example.demo.dto.JwtResponse;
 import com.example.demo.model.MessageResponse;
 import com.example.demo.model.Paymentdto;
 import com.example.demo.model.ReservationDetails;
-import com.example.demo.model.LoginRequest;
-import com.example.demo.model.SignupRequest;
+import com.example.demo.dto.LoginRequest;
+import com.example.demo.dto.SignupRequest;
 import com.example.demo.model.ERole;
 import com.example.demo.model.Role;
 import com.example.demo.service.UserService;
@@ -58,18 +58,18 @@ public class AuthController {
 
 	@Autowired
 	private UserService userService;
-	
+
 	@Autowired
 	private PaymentRepository paymentRepository;
 
 	@PostMapping("/signin")
-	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+	public ResponseEntity<Object> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
 		JwtResponse jwtResponse = userService.loginService(loginRequest);
 		if (jwtResponse != null) {
 			return ResponseEntity.ok(jwtResponse);
 		} else {
-			return ResponseEntity.badRequest().body(new MessageResponse("Error: Email is already in use!"));
+			return ResponseEntity.badRequest().body(new MessageResponse("Something went wrong, try again!"));
 		}
 
 	}
@@ -84,7 +84,7 @@ public class AuthController {
 		User user = userRepository.findUserByUsername(username);
 		return user.getImageOfProfile();
 	}
-	
+
 	@GetMapping("/employees/{email}")
 	public String changeProfilePicture(@PathVariable String email) {
 		User user = userRepository.findUserByUsername(email);
@@ -101,6 +101,7 @@ public class AuthController {
 
 	@PostMapping("/signup")
 	public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+
 		System.out.println("hello");
 		LocalDate localDate = LocalDate.now();
 		System.out.println("Successfully Deleted" + signUpRequest.getDateOfBirth());
@@ -130,17 +131,19 @@ public class AuthController {
 		String userType = signUpRequest.getUserType();
 
 		if (userType.equals("Bronze")) {
-			reservation = new ReservationDetails(signUpRequest.getEmail(), 3, 5, 21, 5, 50, 100,1000,
-					20);
+			reservation = new ReservationDetails(signUpRequest.getEmail(), 3, 5, 21, 5, 50, 100, 1000, 20);
 		} else if (userType.equals("Silver")) {
-			//reservation = new ReservationDetails(signUpRequest.getEmail(), "5", "7", "28", "7", "40", "80", "2000",
-					//"15");
+			// reservation = new ReservationDetails(signUpRequest.getEmail(), "5", "7",
+			// "28", "7", "40", "80", "2000",
+			// "15");
 		} else if (userType.equals("Gold")) {
-			//reservation = new ReservationDetails(signUpRequest.getEmail(), "7", "9", "28", "10", "30", "60", "3000",
-					//"10");
+			// reservation = new ReservationDetails(signUpRequest.getEmail(), "7", "9",
+			// "28", "10", "30", "60", "3000",
+			// "10");
 		} else {
-			//reservation = new ReservationDetails(signUpRequest.getEmail(), "10", "10", "35", "7", "20", "40", "5000",
-					//"5");
+			// reservation = new ReservationDetails(signUpRequest.getEmail(), "10", "10",
+			// "35", "7", "20", "40", "5000",
+			// "5");
 		}
 		reservationRepository.save(reservation);
 
@@ -182,17 +185,38 @@ public class AuthController {
 		return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
 
 	}
-	
+
+	public void addNewReservationDetails(String userType, SignupRequest signUpRequest) {
+		ReservationDetails reservation = null;
+
+		if (userType.equals("Bronze")) {
+			reservation = new ReservationDetails(signUpRequest.getEmail(), 3, 5, 21, 5, 50, 100, 1000, 20);
+		} else if (userType.equals("Silver")) {
+			// reservation = new ReservationDetails(signUpRequest.getEmail(), "5", "7",
+			// "28", "7", "40", "80", "2000",
+			// "15");
+		} else if (userType.equals("Gold")) {
+			// reservation = new ReservationDetails(signUpRequest.getEmail(), "7", "9",
+			// "28", "10", "30", "60", "3000",
+			// "10");
+		} else {
+			// reservation = new ReservationDetails(signUpRequest.getEmail(), "10", "10",
+			// "35", "7", "20", "40", "5000",
+			// "5");
+		}
+		reservationRepository.save(reservation);
+	}
+
 	public void addPayment(String email) {
-		
-		Paymentdto payment=new Paymentdto();
+
+		Paymentdto payment = new Paymentdto();
 		payment.setEmail(email);
 		payment.setPaymentStatus("unpaid");
 		payment.setReason("registrationFee");
 		payment.setPrice(2000);
 		paymentRepository.save(payment);
 		System.out.println("payment is added");
-		
+
 	}
 
 }

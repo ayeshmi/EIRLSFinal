@@ -35,7 +35,7 @@ public class User {
 	@Size(max = 120)
 	private String password;
 	
-	@NotBlank
+
 	@Size(max = 30)
 	private String userType;
 
@@ -47,6 +47,9 @@ public class User {
 	
 	@Size(max = 750)
 	private String imageOfProfile;
+	
+	@Size(max = 40)
+	private String status;
 	
 	
 
@@ -133,6 +136,14 @@ public class User {
 
 	public void setUserType(String userType) {
 		this.userType = userType;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 
