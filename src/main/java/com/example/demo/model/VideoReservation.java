@@ -5,19 +5,19 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.Size;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.Size;
 
 @Entity
-@Table(name="bookReservation")
-public class BookReservation {
-
+@Table(name="videoReservation")
+public class VideoReservation {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@Size(max = 200)
-	private String bookName;
+	private String videoName;
 	
 	@Size(max = 50)
 	private String date;
@@ -32,11 +32,11 @@ public class BookReservation {
 	@Email
 	private String email;
 	
-	@Size(max = 50)
-	private  String userId;
 	
-	@Size(max = 50)
-	private  String bookId;
+	private  Long userId;
+	
+
+	private  Long videoId;
 	
 	@Size(max = 50)
 	private String status;
@@ -46,15 +46,13 @@ public class BookReservation {
 	
 	private int overduePayment;
 	
-	
-	
-	public BookReservation() {
+	public VideoReservation() {
 		
 	}
 	
-	public BookReservation(String bookName, String date, String username, String userId) {
+	public VideoReservation(String videoName, String date, String username, Long userId) {
 		super();
-		this.bookName = bookName;
+		this.videoName = videoName;
 		this.date = date;
 		this.username = username;
 		this.userId = userId;
@@ -62,25 +60,19 @@ public class BookReservation {
 	
 	
 	
-	public BookReservation( String bookName, String date,
-			 String username,  String userId,  String bookId,String returnDate) {
+	public VideoReservation( String videoName, String date,
+			 String username,  Long userId,  Long videoId,String returnDate) {
 		super();
-		this.bookName = bookName;
+		this.videoName = videoName;
 		this.date = date;
 		this.username = username;
 		this.userId = userId;
-		this.bookId = bookId;
+		this.videoId = videoId;
 		this.returnDate=returnDate;
 	}
 
 	
 
-	public String getBookName() {
-		return bookName;
-	}
-	public void setBookName(String bookName) {
-		this.bookName = bookName;
-	}
 	public String getDate() {
 		return date;
 	}
@@ -93,10 +85,10 @@ public class BookReservation {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	public String getUserId() {
+	public Long getUserId() {
 		return userId;
 	}
-	public void setUserId(String userId) {
+	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
 
@@ -114,14 +106,6 @@ public class BookReservation {
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	public String getBookId() {
-		return bookId;
-	}
-
-	public void setBookId(String bookId) {
-		this.bookId = bookId;
 	}
 
 	public String getReturnDate() {
@@ -155,7 +139,23 @@ public class BookReservation {
 	public void setOverduePayment(int overduePayment) {
 		this.overduePayment = overduePayment;
 	}
+
+	public String getVideoName() {
+		return videoName;
+	}
+
+	public void setVideoName(String videoName) {
+		this.videoName = videoName;
+	}
+
+	public Long getVideoId() {
+		return videoId;
+	}
+
+	public void setVideoId(Long videoId) {
+		this.videoId = videoId;
+	}
 	
 	
-	
+
 }

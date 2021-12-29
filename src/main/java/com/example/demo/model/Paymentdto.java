@@ -22,8 +22,7 @@ public class Paymentdto {
 	private String reason;
 	
 	private int price;
-	
-	
+		
 	@Size(max = 20)
 	private String cardType;
 	
@@ -41,18 +40,18 @@ public class Paymentdto {
 	
 	private String paymentStatus;
 	
+	private Long bookId;
+	
+	private Long userId;
+	
 	public Paymentdto(){
 		
 	}
 	
-	
-
 	public Paymentdto(String email) {
 		super();
 		this.email = email;
 	}
-
-
 
 	public Long getId() {
 		return id;
@@ -132,6 +131,22 @@ public class Paymentdto {
 
 	public void setPaymentStatus(String paymentStatus) {
 		this.paymentStatus = paymentStatus;
+	}
+
+	public Long getBookId() {
+		return bookId;
+	}
+
+	public void setBookId(Long bookId) {
+		this.bookId = bookId;
+	}
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 	
 	

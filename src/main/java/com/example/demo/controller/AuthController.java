@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -73,10 +74,28 @@ public class AuthController {
 		}
 
 	}
+	
+	@DeleteMapping("/deleteUser/{id}")
+	public ResponseEntity<Object> deleteUser(@PathVariable Long id) {
+		MessageResponse message =userService.deleteUser(id);
+		if(message.getMessage().equals("User is successfully deleted!")){
+			return ResponseEntity.ok(message);
+		}else {
+			return ResponseEntity.badRequest().body(new MessageResponse("Something went wrong, try again!"));
+		}
+
+	}
 
 	@GetMapping("/employees")
-	public List<User> getAllUser() {
-		return userService.getAllUsers();
+	public ResponseEntity<Object> getAllUser() {
+		List<User> users= userService.getAllUsers();
+		if(users.size() != 0) {
+			return ResponseEntity.ok(users);
+		}
+		else {
+			MessageResponse message =new MessageResponse("No Records found!");
+			return ResponseEntity.badRequest().body(message);
+		}
 	}
 
 	@GetMapping("/employees/{username}")
@@ -124,10 +143,10 @@ public class AuthController {
 
 		// Create new user's account
 		User user = new User(signUpRequest.getUsername(), signUpRequest.getEmail(), signUpRequest.getDateOfBirth(),
-				encoder.encode(signUpRequest.getPassword()), signUpRequest.getUserType());
+				encoder.encode(signUpRequest.getPassword()), signUpRequest.getUserType(),signUpRequest.getNewUpdates());
 
 		ReservationDetails reservation = null;
-		System.out.println("USerType" + signUpRequest.getUserType());
+		System.out.println("USerType" + signUpRequest.getNewUpdates());
 		String userType = signUpRequest.getUserType();
 
 		if (userType.equals("Bronze")) {
@@ -146,7 +165,7 @@ public class AuthController {
 			// "5");
 		}
 		reservationRepository.save(reservation);
-
+		addPaymentAnnualPayment(signUpRequest.getEmail());
 		Set<String> strRoles = signUpRequest.getRole();
 		Set<Role> roles = new HashSet<>();
 
@@ -218,5 +237,16 @@ public class AuthController {
 		System.out.println("payment is added");
 
 	}
+	public void addPaymentAnnualPayment(String email) {
 
+		Paymentdto payment = new Paymentdto();
+		payment.setEmail(email);
+		ReservationDetails details=reservationRepository.findByUsername(email);
+		payment.setPaymentStatus("unpaid");
+		payment.setReason("annualPayment");
+		payment.setPrice(details.getAnnualFee());
+		paymentRepository.save(payment);
+		System.out.println("payment is added");
+
+	}
 }

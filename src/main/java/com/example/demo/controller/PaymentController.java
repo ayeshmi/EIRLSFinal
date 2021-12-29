@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
-import javax.validation.Valid;
+
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +17,6 @@ import com.example.demo.model.Checking;
 import com.example.demo.dto.MessageResponse;
 import com.example.demo.model.PaymentRequest;
 import com.example.demo.model.Paymentdto;
-import com.example.demo.dto.SignupRequest;
 import com.example.demo.repository.PaymentRepository;
 import com.example.demo.repository.checkingRepository;
 
@@ -73,6 +73,21 @@ public class PaymentController {
 		System.out.println(""+check.getNum1());
 		
 	
+	}
+	
+	@GetMapping("/allUnpaidPayments/{email}")
+	public List<Paymentdto>  viewAllPaymentsForUser(@PathVariable("email") String email) {
+		System.out.println("Payment is called");
+		List<Paymentdto> payment=paymentRepository.findAllPaymentDetailsByEmail(email);
+		
+		return payment;
+	}
+	
+	@PostMapping("/addBookOrder")
+	public List<Paymentdto>  addBookOrder(@RequestBody Paymentdto paymentdto) {
+		paymentdto.setReason("OrderFee");
+		paymentRepository.save(paymentdto);
+		return null;
 	}
 	
 	

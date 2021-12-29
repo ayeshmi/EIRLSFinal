@@ -26,6 +26,8 @@ public class SignupRequest {
 	    @NotBlank
 	    @Size(min = 6, max = 40)
 	    private String password;
+	    
+	    private String newUpdates;
 	  
 	    public String getUsername() {
 	        return username;
@@ -74,6 +76,14 @@ public class SignupRequest {
 
 		public void setUserType(String userType) {
 			this.userType = userType;
+		}
+
+		public String getNewUpdates() {
+			return newUpdates;
+		}
+
+		public void setNewUpdates(String newUpdates) {
+			this.newUpdates = newUpdates;
 		}
 	    
 	    

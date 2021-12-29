@@ -1,6 +1,5 @@
 package com.example.demo.repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -22,4 +21,7 @@ public interface VideoRepository extends JpaRepository<Video,Long>{
 	
 	@Query(value="select * from video v where v.title like %:keyword% or v.description like %:keyword% or v.category like %:keyword% ", nativeQuery = true)
 	List<Video> search(@Param("keyword")String a);
+	
+	@Query(value="select * from video where age_limitation=:keyword2 AND category=:keyword1 ", nativeQuery = true)
+	List<Video> getVideoAgeLimitation(@Param("keyword1")String b,@Param("keyword2")String a);
 }

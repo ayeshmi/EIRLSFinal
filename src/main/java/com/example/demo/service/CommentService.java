@@ -30,7 +30,7 @@ public class CommentService {
 
 	public List<Comment> getBookById(String id){
 		Long Id=Long.parseLong(id);
-		System.out.println("hello ayeshmi"+id);
+		
 		List<Comment>  comment=commentRepository.findByType(id);
 				
 		System.out.println("Hello Comment123"+comment);

@@ -2,7 +2,6 @@ package com.example.demo.controller;
 
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 
 import com.example.demo.dto.MessageResponse;
 import com.example.demo.model.Video;
@@ -31,7 +29,7 @@ public class VideoController {
 	VideoService videoService;
 	
 	@GetMapping("/AllVideos")
-	public ResponseEntity<Object> getAllVideos(){
+	public ResponseEntity<Object> getAllVideos(@PathVariable("id") Long id){
 		List<Video> list = videoService.getAllVideos();
 		
 		if(list.size() != 0) {
@@ -87,6 +85,25 @@ public class VideoController {
 					return ResponseEntity.badRequest().body(message);
 				}
 		    }
+			
+			@GetMapping("/RselectedVideoR/{category}/{id}")
+			public List<Video> getVideoByRomance(@PathVariable("category") String category,@PathVariable("id")Long id ) {
+                System.out.println(" called"+id);
+				List<Video> list = videoService.getVideosByRomance(category,id);
+				return list;
+			}
+			
+			@GetMapping("/Video/{id}")
+			public ResponseEntity<Object> getVideoById(@PathVariable Long id) {
+				Video video = videoService.getVideoById(id);
+				if(video != null) {
+					return ResponseEntity.ok(video);
+				}
+				else {
+					return ResponseEntity.badRequest().body(new MessageResponse("Selected Book is not exit!"));	
+				}
+				
+			}
 			
 			
 

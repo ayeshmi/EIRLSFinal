@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.time.temporal.ChronoUnit;
 
@@ -14,17 +13,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.model.Book;
+
 import com.example.demo.model.BookReservation;
 import com.example.demo.dto.MessageResponse;
 import com.example.demo.model.Paymentdto;
 import com.example.demo.model.ReservationDetails;
 import com.example.demo.model.User;
-import com.example.demo.repository.BookRepository;
+import com.example.demo.model.VideoReservation;
 import com.example.demo.repository.BookReservationRepository;
 import com.example.demo.repository.PaymentRepository;
 import com.example.demo.repository.ReservationRepository;
-import com.example.demo.repository.UserRepository;
+import com.example.demo.repository.VideoReservationRepository;
+import com.example.demo.service.EmailSender;
 import com.example.demo.service.ReservationService;
 
 @RestController
@@ -34,21 +34,22 @@ public class ReservationController {
 
 	@Autowired
 	BookReservationRepository bookReservationRepository;
+	
+	@Autowired
+	VideoReservationRepository videoReservationRepository;
 
 	@Autowired
 	ReservationService reservationService;
-
-	@Autowired
-	private UserRepository userRepository;
-
+	
 	@Autowired
 	ReservationRepository reservationRepository;
 
 	@Autowired
 	private PaymentRepository paymentRepository;
-
+	
 	@Autowired
-	private BookRepository bookRepository;
+	private EmailSender emailSender;
+
 
 	@PostMapping("/bookReservation")
 	public ResponseEntity<Object> addBookReservation(@RequestBody BookReservation bookReservation) {
@@ -58,47 +59,39 @@ public class ReservationController {
 		} else {
 			return ResponseEntity.badRequest().body(message);
 		}
+	}
+	
+	@PostMapping("/videoReservation")
+	public ResponseEntity<Object> addVideoReservation(@RequestBody VideoReservation videoReservation) {
+		MessageResponse message = reservationService.addToCartVideoReservation(videoReservation);
+		if (message.getMessage().equals("Your Video Lending is Successfully Added!")) {
+			return ResponseEntity.ok(message);
+		} else {
+			return ResponseEntity.badRequest().body(message);
+		}
 
 	}
 
 	@PostMapping("/advanceBookReservation12")
-	public ResponseEntity<?> advanceBookReservation(@RequestBody BookReservation bookReservation) {
-		System.out.println("CurrentDate1289" + bookReservation.getEmail());
-		LocalDate localDate = LocalDate.parse(bookReservation.getDate());
-		ReservationDetails bookReservationS = reservationRepository.findByUsername(bookReservation.getEmail());
-
-		int days = bookReservationS.getBookDurationDays();
-		int numberOfBooks = bookReservationS.getNumberOfBooks();
-
-		LocalDate newDate = localDate.plusDays(days);
-
-		bookReservation.setDate(localDate.toString());
-		bookReservation.setReturnDate(newDate.toString());
-
-		int count = reservationRepository.countOfBooks(bookReservation.getEmail());
-
-		bookReservation.setLendingStatus("cart");
-
-		if (count == numberOfBooks || count >= numberOfBooks) {
-
-			return ResponseEntity.ok(new MessageResponse("Your Book Lending Limitation is Exceeded!"));
+	public ResponseEntity<Object> advanceBookReservation(@RequestBody BookReservation bookReservation) {
+		
+		MessageResponse message=reservationService.advanceBookReservation(bookReservation);
+		if (message.getMessage().equals("Your Book Lending is Successfully Added!")) {
+			return ResponseEntity.ok(message);
+		} else {
+			return ResponseEntity.badRequest().body(message);
 		}
 
-		else {
-			long bookId = Long.parseLong(bookReservation.getBookId());
-			Book book = bookRepository.findById(bookId).orElseThrow();
-			// String a=book.getNumberOfCopies();
-			int numberOfCopies = book.getNumberOfCopies();
-			int ongoingBookReservation = bookReservationRepository.countOfBooksById(bookReservation.getBookId());
-			if (numberOfCopies == ongoingBookReservation) {
-				return ResponseEntity.ok(new MessageResponse("Book is already lended, no any copies available."));
-			} else {
-				bookReservationRepository.save(bookReservation);
-				return ResponseEntity.ok(new MessageResponse("Your Book Lending is Successfully Added!"));
-			}
-
+	}
+	
+	@PostMapping("/advanceVideoReservation")
+	public ResponseEntity<Object> advanceVideoReservation(@RequestBody VideoReservation videoReservation) {
+		MessageResponse message=reservationService.advanceVideoReservation( videoReservation);
+		if (message.getMessage().equals("Your Video Lending is Successfully Added!")) {
+			return ResponseEntity.ok(message);
+		} else {
+			return ResponseEntity.badRequest().body(message);
 		}
-
 	}
 
 	@GetMapping("/getAllCartBookReservation/{email}")
@@ -112,23 +105,44 @@ public class ReservationController {
 		}
 		
 	}
+	
+	@GetMapping("/getAllCartVideoReservation/{email}")
+	public ResponseEntity<Object> getCartVideoReseravtionDetails(@PathVariable("email") String email) {
+		List<VideoReservation> videoReservation = reservationService.getCartVideoReseravtionDetails(email);
+		if (videoReservation.size() != 0) {
+			return ResponseEntity.ok(videoReservation);
+		} else {
+			MessageResponse message = new MessageResponse("No Records found!");
+			return ResponseEntity.badRequest().body(message);
+		}
+		
+	}
 
 	@GetMapping("/getAllOngoingBookReservation/{email}")
 	public ResponseEntity<Object> getOngoingBookReseravtionDetails(@PathVariable("email") String email) {
 		System.out.println("Count is countuu" + email);
 		List<BookReservation> bookReservation = bookReservationRepository.getAllOngoingBookReservation(email);
+		System.out.println("Count is countuu" + bookReservation);
 		return ResponseEntity.ok(bookReservation);
+	}
+	
+	@GetMapping("/getAllOngoingVideoReservation/{email}")
+	public ResponseEntity<Object> getOngoingVideoReseravtionDetails(@PathVariable("email") String email) {
+		System.out.println("Count is countuu" + email);
+		List<VideoReservation> videoReservation = videoReservationRepository.getAllOngoingVideoReservation(email);
+		return ResponseEntity.ok(videoReservation);
 	}
 
 	@GetMapping("/getCheckOutTotalPrice/{email}")
 	public ResponseEntity<Object> checkOutDetailsForBookReservation(@PathVariable("email") String email) {
-		List<BookReservation> bookReservation = bookReservationRepository.getAllCartBookReservation(email);
-		int size = bookReservation.size();
-		ReservationDetails bookReservationS = reservationRepository.findByUsername(email);
-		int lendingPrice = bookReservationS.getBookCharges();
-		int totalCheckoutPrice = size * lendingPrice;
-		System.out.println("Count is count");
-		return ResponseEntity.ok(totalCheckoutPrice);
+		int totalPrice=reservationService.checkOutDetailsForBookReservation(email);
+		return ResponseEntity.ok(totalPrice);
+	}
+	
+	@GetMapping("/getCheckOutTotalPriceVideo/{email}")
+	public ResponseEntity<Object> checkOutDetailsForVideoReservation(@PathVariable("email") String email) {
+		int totalPrice=reservationService.checkOutDetailsForVideoReservation(email);
+		return ResponseEntity.ok(totalPrice);
 	}
 
 	@PostMapping("/confirmBookCart/{email}")
@@ -146,8 +160,31 @@ public class ReservationController {
 		payment.setReason("LendingFee");
 		payment.setPaymentStatus("unpaid");
 		paymentRepository.save(payment);
-
+		emailSender.sendEmail();
 		System.out.println("Count is count4555" + payment.getPrice());
+		// System.out.println("Count is count45"+price);
+		return ResponseEntity.ok("Payment is added succesfully");
+	}
+	
+	@PostMapping("/confirmVideoCart/{email}")
+	public ResponseEntity<Object> confirmVideoCart(@PathVariable("email") String email,
+			@RequestBody Paymentdto payment) {
+		
+		System.out.println("Count is count4555ddddddddd" );
+		List<VideoReservation> videoReservation = videoReservationRepository.getAllCartVideoReservation(email);
+		
+		for (int i = 0; i < videoReservation.size(); i++) {
+			videoReservation.get(i).setStatus("ongoing");
+
+			videoReservationRepository.save(videoReservation.get(i));
+		}
+		payment.setEmail(email);
+		payment.setPrice(payment.getPrice());
+		payment.setReason("LendingFee");
+		payment.setPaymentStatus("unpaid");
+		paymentRepository.save(payment);
+		emailSender.sendEmail();
+		
 		// System.out.println("Count is count45"+price);
 		return ResponseEntity.ok("Payment is added succesfully");
 	}
@@ -175,30 +212,44 @@ public class ReservationController {
 
 	@GetMapping("/getBookReservationById/{id}")
 	public ResponseEntity<Object> getBookReservationById(@PathVariable("id") String id) {
+		System.out.println("dsdsds"+id);
 		List<BookReservation> bookReservation = bookReservationRepository.getBookReservationByBookId(id);
 
 		return ResponseEntity.ok(bookReservation);
 	}
+	
+	@GetMapping("/getVideoReservationById/{id}")
+	public ResponseEntity<Object> getVideoReservationById(@PathVariable("id") Long id) {
+		System.out.println("dsdsdsee"+id);
+		List<VideoReservation> videoReservation = reservationService.getVideoReservationByVideoId(id);
+
+		return ResponseEntity.ok(videoReservation);
+	}
 
 	@GetMapping("/viewBlackListCustomers")
 	public ResponseEntity<Object> viewBlackListCustomers() {
-		List<String> userIds = bookReservationRepository.getBlackListCutomers();
-		System.out.println("users " + userIds.get(1));
-
-		List<User> users = new ArrayList<>();
-		for (int i = 1; i < userIds.size(); i++) {
-
-			long userID = Long.parseLong(userIds.get(i));
-			User user = userRepository.findById(userID).orElseThrow();
-
-			user.setStatus("blackList");
-			userRepository.save(user);
-
-			users.add(user);
-
+		List<User> users=reservationService.viewBlackListCustomers();
+		if(users.size() != 0) {
+			return ResponseEntity.ok(users);	
+		}else {
+			MessageResponse message =new MessageResponse("No Records found!");
+			return ResponseEntity.badRequest().body(message);
 		}
-
-		return ResponseEntity.ok(users);
 	}
+	
+	@GetMapping("/addBookOrder")
+	public ResponseEntity<Object> addBookOrder(@RequestBody Paymentdto paymentdto) {
+		List<User> users=reservationService.viewBlackListCustomers();
+		if(users.size() != 0) {
+			return ResponseEntity.ok(users);	
+		}else {
+			MessageResponse message =new MessageResponse("No Records found!");
+			return ResponseEntity.badRequest().body(message);
+		}
+	}
+	
+	
+	
+	
 
 }

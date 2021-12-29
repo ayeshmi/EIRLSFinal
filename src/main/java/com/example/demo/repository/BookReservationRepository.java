@@ -34,5 +34,8 @@ public interface BookReservationRepository extends JpaRepository<BookReservation
 	@Query(value="SELECT  DISTINCT(user_id)  FROM book_reservation where overdue_payment != 0; ", nativeQuery = true)
 	List<String> getBlackListCutomers();
 
+	int countOfVideosById(Long videoId);
+
+
 	
 }

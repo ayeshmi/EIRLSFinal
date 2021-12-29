@@ -32,6 +32,30 @@ public class EmailSender {
 
     }
 	 
+	 public void sendEmailNewBook() {
+		 
+	        SimpleMailMessage msg = new SimpleMailMessage();
+	        msg.setTo("domsellanka@gmail.com", "domsellanka@gmail.com");
+
+	        msg.setSubject("Testing from Spring Boot");
+	        msg.setText("Hello Customer \n You are successfully registered into the system");
+
+	        javaMailSender.send(msg);
+
+	    }
+	 
+	 public void sendEmailNewVideo() {
+		 
+	        SimpleMailMessage msg = new SimpleMailMessage();
+	        msg.setTo("domsellanka@gmail.com", "domsellanka@gmail.com");
+
+	        msg.setSubject("Testing from Spring Boot");
+	        msg.setText("Hello Customer \n You are successfully registered into the system");
+
+	        javaMailSender.send(msg);
+
+	    }
+	 
 	 public void sendEmailContactUs(String email,String answer) {
 		 
 	        SimpleMailMessage msg = new SimpleMailMessage();

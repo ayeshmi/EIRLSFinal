@@ -28,6 +28,8 @@ public class Comment {
 	@Size(max = 200)
 	private String typeID;
 	
+	private Long userID;
+	
 	
 	
 	public Comment(Long commentID, String username, String commentDetails, String type, String typeID) {
@@ -82,6 +84,14 @@ public class Comment {
 	
 	public void setTypeID(String typeID) {
 		this.typeID = typeID;
+	}
+
+	public Long getUserID() {
+		return userID;
+	}
+
+	public void setUserID(Long userID) {
+		this.userID = userID;
 	}
 
 

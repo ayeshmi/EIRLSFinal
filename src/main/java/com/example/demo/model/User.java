@@ -51,6 +51,8 @@ public class User {
 	@Size(max = 40)
 	private String status;
 	
+	private String newUpdates;
+	
 	
 
 	public User() {
@@ -63,12 +65,13 @@ public class User {
 		this.password = password;
 		
 	}
-	public User(String username, String email,String birthday, String password,String userType) {
+	public User(String username, String email,String birthday, String password,String userType,String newUpdate) {
 		this.username = username;
 		this.email = email;
 		this.dateOfBirth=birthday;
 		this.password = password;
 		this.userType=userType;
+		this.newUpdates=newUpdate;
 		
 	}
 	
@@ -144,6 +147,14 @@ public class User {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public String getNewUpdates() {
+		return newUpdates;
+	}
+
+	public void setNewUpdates(String newUpdates) {
+		this.newUpdates = newUpdates;
 	}
 
 

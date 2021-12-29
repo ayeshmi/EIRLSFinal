@@ -9,14 +9,22 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.model.Book;
+import com.example.demo.model.User;
 import com.example.demo.dto.MessageResponse;
 import com.example.demo.repository.BookRepository;
+import com.example.demo.repository.UserRepository;
 
 @Service
 public class BookService {
 
 	@Autowired
-	BookRepository bookRepository;
+	private BookRepository bookRepository;
+	
+	@Autowired
+	private UserRepository userRepository;
+	
+	@Autowired
+	private EmailSender emailSender;
 
 	public List<Book> getAllBooks() {
 		List<Book> books=null;
@@ -38,6 +46,12 @@ public class BookService {
 				return new MessageResponse("Error: This book is already registered in this system.");
 			}
 			bookRepository.save(book);
+			List<User> users=userRepository.getUsers();
+			for(int i=0;i<users.size();i++) {
+				users.get(i).getEmail();
+				emailSender.sendEmailNewBook();
+				
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

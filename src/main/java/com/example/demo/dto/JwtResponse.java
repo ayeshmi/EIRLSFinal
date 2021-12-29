@@ -9,14 +9,16 @@ public class JwtResponse {
 	private String email;
 	private String profileImage;
 	private List<String> roles;
+	private String birthDay;
 
-	public JwtResponse(String accessToken, Long id, String username, String email, List<String> roles,String profileImage) {
+	public JwtResponse(String accessToken, Long id, String username, String email, List<String> roles,String profileImage,String birthDay) {
 		this.token = accessToken;
 		this.id = id;
 		this.username = username;
 		this.email = email;
 		this.roles = roles;
 		this.profileImage=profileImage;
+		this.birthDay=birthDay;
 	}
 
 	public String getAccessToken() {
@@ -69,6 +71,34 @@ public class JwtResponse {
 
 	public void setProfileImage(String profileImage) {
 		this.profileImage = profileImage;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getBirthDay() {
+		return birthDay;
+	}
+
+	public void setBirthDay(String birthDay) {
+		this.birthDay = birthDay;
+	}
+
+	public void setRoles(List<String> roles) {
+		this.roles = roles;
 	}
 	
 	

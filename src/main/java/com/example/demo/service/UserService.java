@@ -14,9 +14,10 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.JwtResponse;
 import com.example.demo.dto.LoginRequest;
+import com.example.demo.dto.MessageResponse;
+import com.example.demo.model.Book;
 import com.example.demo.model.User;
 import com.example.demo.model.UserDetailsImpl;
-import com.example.demo.model.Video;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.repository.ReservationRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -59,7 +60,7 @@ public class UserService {
 					.collect(Collectors.toList());
 
 			jwtResponse = new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail(),
-					roles, userDetails.getProfileImage());
+					roles, userDetails.getProfileImage(),userDetails.getAge());
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -81,6 +82,20 @@ public class UserService {
 	public User uploadProfileDetails(User user1) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public MessageResponse deleteUser(Long id) {
+		MessageResponse messageResponse = null;
+
+		try {
+			User user = userRepository.findById(id).orElseThrow();
+			userRepository.delete(user);
+			messageResponse = new MessageResponse("User is successfully deleted!");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return messageResponse;
 	}
 
 }
