@@ -1,6 +1,5 @@
 package com.example.demo.service;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 
@@ -14,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import com.example.demo.model.Book;
 import com.example.demo.model.ContactUs;
 import com.example.demo.repository.ContactUsRepository;
 

@@ -1,10 +1,7 @@
 package com.example.demo.controller;
 
-
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
-
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +19,8 @@ import com.example.demo.dto.MessageResponse;
 import com.example.demo.repository.ContactUsRepository;
 import com.example.demo.service.ContactUsService;
 
+
+
 @RestController
 
 @RequestMapping("/api/auth")
@@ -32,6 +31,7 @@ public class ContactUsController {
 	
 	@Autowired
 	ContactUsService contactusService;
+
 	
 	@GetMapping("/allConatctUs")
 	public ResponseEntity<Object> getAllContactUsDetails(){
@@ -87,5 +87,6 @@ MessageResponse message = contactusService.addNewContactusDetails(contactus);
 		return ResponseEntity.ok(new MessageResponse("Successfully Deleted!"));
 		
 	}
+	  
 	
 }
