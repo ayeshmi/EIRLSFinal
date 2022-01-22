@@ -63,7 +63,7 @@ public class commentController {
 	
 	@DeleteMapping("/deleteInappropiateCommentByID/{id}")
 	public void deleteInappropiateCommentByID(@PathVariable("id") Long id){
-		
+	System.out.println("Hello u did");	
 	Comment comment=commentRepository.findById(id).orElseThrow();
 	
 	commentRepository.delete(comment);

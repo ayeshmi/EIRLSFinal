@@ -19,6 +19,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.example.demo.model.Book;
+import com.example.demo.model.User;
 import com.example.demo.repository.BookRepository;
 
 import org.junit.jupiter.api.Test;
@@ -39,10 +40,11 @@ class BookServiceTest {
 	    @DisplayName("Test findAll")
 	    void testFindAll() {
 	        // Setup our mock repository
-	        Book widget1 = new Book(1l, "Widget Name", "Description", "d","d","d","d","d","d","d");
-	        Book widget2 = new Book(2l, "Widget Name", "Description", "d","d","d","d","d","d","d");
+		 Book book1 = new Book(5l, "Drama", "Description", "d","d",1L,"d",1234,"d","d");
+	    	Book book2 = new Book(6l, "Drama", "Description", "d","d",1L,"d",1234,"d","d");
+	    	
 	       
-	        doReturn(Arrays.asList(widget1, widget2)).when(bookRepository).findAll();
+	        doReturn(Arrays.asList(book1, book2)).when(bookRepository).findAll();
 
 	        // Execute the service call
 	        List<Book> widgets = bookservice.getAllBooks(); 
@@ -55,7 +57,8 @@ class BookServiceTest {
 	    @DisplayName("Test save")
 	    void testSave() {
 	    	// Setup our mock repository
-	    	Book book = new Book(1l, "Widget Name", "Description", "d","d","d","d","d","d","d");
+	    	Book book = new Book(5l, "Drama", "Description", "d","d",1L,"d",1234,"d","d");
+	    	
 	        doReturn(book).when(bookRepository).save(any());
 
 	        // Execute the service call
@@ -68,7 +71,8 @@ class BookServiceTest {
 	    @DisplayName("Test findById Success")
 	    void testFindById() {
 	        // Setup our mock repository
-	    	Book book = new Book(1l, "Widget Name", "Description", "d","d","d","d","d","d","d");
+	    	Book book = new Book(5l, "Drama", "Description", "d","d",1L,"d",1234,"d","d");
+	    	
 	    	doReturn(Optional.of(book)).when(bookRepository).findById(1l);
 
 	        // Execute the service call
@@ -88,9 +92,10 @@ class BookServiceTest {
 	    void testFindByCategory() {
 	        // Setup our mock repository
 	    	
-	    	Book book1 = new Book(5l, "Romance", "Description", "d","d","d","d","d","d","d");
-	    	Book book2 = new Book(6l, "Romance", "Description", "d","d","d","d","d","d","d");
-	    	Book book3 = new Book(7l, "Romance", "Description", "d","d","d","d","d","d","d");
+	    	Book book1 = new Book(5l, "Drama", "Description", "d","d",1L,"d",1234,"d","d");
+	    	Book book2 = new Book(6l, "Drama", "Description", "d","d",1L,"d",1234,"d","d");
+	    	Book book3 = new Book(7l, "Drama", "Description", "d","d",1L,"d",1234,"d","d");
+	    	
 	    	doReturn(Arrays.asList(book1, book2,book3)).when(bookRepository).findByCategory("Romance");
 	    	
 	    	List<Book> list12 = new ArrayList<>(2);
@@ -110,10 +115,10 @@ class BookServiceTest {
 	    void testFindByCategoryRomance() {
 	        // Setup our mock repository
 	    	
-	    	Book book1 = new Book(5l, "Romance", "Description", "d","d","d","d","d","d","d");
-	    	Book book2 = new Book(6l, "Romance", "Description", "d","d","d","d","d","d","d");
-	    	Book book3 = new Book(7l, "Romance", "Description", "d","d","d","d","d","d","d");
-	    	Book book4 = new Book(7l, "Romance", "Description", "d","d","d","d","d","d","d");
+	    	Book book1 = new Book(5l, "Drama", "Description", "d","d",1L,"d",1234,"d","d");
+	    	Book book2 = new Book(6l, "Drama", "Description", "d","d",1L,"d",1234,"d","d");
+	    	Book book3 = new Book(7l, "Drama", "Description", "d","d",1L,"d",1234,"d","d");
+	    	Book book4 = new Book(8l, "Drama", "Description", "d","d",1L,"d",1234,"d","d");
 	    	doReturn(Arrays.asList(book1, book2,book3,book4)).when(bookRepository).findByCategory("Romance");
 	    	
 	    	List<Book> list12 = new ArrayList<>(3);
@@ -133,10 +138,10 @@ class BookServiceTest {
 	    void testFindByCategoryComic() {
 	        // Setup our mock repository
 	    	
-	    	Book book1 = new Book(5l, "Comic", "Description", "d","d","d","d","d","d","d");
-	    	Book book2 = new Book(6l, "Comic", "Description", "d","d","d","d","d","d","d");
-	    	Book book3 = new Book(7l, "Comic", "Description", "d","d","d","d","d","d","d");
-	    	Book book4 = new Book(8l, "Comic", "Description", "d","d","d","d","d","d","d");
+	    	Book book1 = new Book(5l, "Drama", "Description", "d","d",1L,"d",1234,"d","d");
+	    	Book book2 = new Book(6l, "Drama", "Description", "d","d",1L,"d",1234,"d","d");
+	    	Book book3 = new Book(7l, "Drama", "Description", "d","d",1L,"d",1234,"d","d");
+	    	Book book4 = new Book(8l, "Drama", "Description", "d","d",1L,"d",1234,"d","d");
 	    	doReturn(Arrays.asList(book1, book2,book3,book4)).when(bookRepository).findByCategory("Comic");
 	    	
 	    	List<Book> list12 = new ArrayList<>(3);
@@ -157,10 +162,10 @@ class BookServiceTest {
 	    void testFindByCategoryAction() {
 	        // Setup our mock repository
 	    	
-	    	Book book1 = new Book(5l, "Action", "Description", "d","d","d","d","d","d","d");
-	    	Book book2 = new Book(6l, "Action", "Description", "d","d","d","d","d","d","d");
-	    	Book book3 = new Book(7l, "Action", "Description", "d","d","d","d","d","d","d");
-	    	Book book4 = new Book(8l, "Action", "Description", "d","d","d","d","d","d","d");
+	    	Book book1 = new Book(5l, "Drama", "Description", "d","d",1L,"d",1234,"d","d");
+	    	Book book2 = new Book(6l, "Drama", "Description", "d","d",1L,"d",1234,"d","d");
+	    	Book book3 = new Book(7l, "Drama", "Description", "d","d",1L,"d",1234,"d","d");
+	    	Book book4 = new Book(8l, "Drama", "Description", "d","d",1L,"d",1234,"d","d");
 	    	doReturn(Arrays.asList(book1, book2,book3,book4)).when(bookRepository).findByCategory("Action");
 	    	
 	    	List<Book> list12 = new ArrayList<>(3);
@@ -181,10 +186,10 @@ class BookServiceTest {
 	    void testFindByCategoryFantasy() {
 	        // Setup our mock repository
 	    	
-	    	Book book1 = new Book(5l, "Fantasy", "Description", "d","d","d","d","d","d","d");
-	    	Book book2 = new Book(6l, "Fantasy", "Description", "d","d","d","d","d","d","d");
-	    	Book book3 = new Book(7l, "Fantasy", "Description", "d","d","d","d","d","d","d");
-	    	Book book4 = new Book(8l, "Fantasy", "Description", "d","d","d","d","d","d","d");
+	    	Book book1 = new Book(5l, "Drama", "Description", "d","d",1L,"d",1234,"d","d");
+	    	Book book2 = new Book(6l, "Drama", "Description", "d","d",1L,"d",1234,"d","d");
+	    	Book book3 = new Book(7l, "Drama", "Description", "d","d",1L,"d",1234,"d","d");
+	    	Book book4 = new Book(8l, "Drama", "Description", "d","d",1L,"d",1234,"d","d");
 	    	doReturn(Arrays.asList(book1, book2,book3,book4)).when(bookRepository).findByCategory("Fantasy");
 	    	
 	    	List<Book> list12 = new ArrayList<>(3);
@@ -205,10 +210,10 @@ class BookServiceTest {
 	    void testFindByCategoryHorror() {
 	        // Setup our mock repository
 	    	
-	    	Book book1 = new Book(5l, "Horror", "Description", "d","d","d","d","d","d","d");
-	    	Book book2 = new Book(6l, "Horror", "Description", "d","d","d","d","d","d","d");
-	    	Book book3 = new Book(7l, "Horror", "Description", "d","d","d","d","d","d","d");
-	    	Book book4 = new Book(8l, "Horror", "Description", "d","d","d","d","d","d","d");
+	    	Book book1 = new Book(5l, "Drama", "Description", "d","d",1L,"d",1234,"d","d");
+	    	Book book2 = new Book(6l, "Drama", "Description", "d","d",1L,"d",1234,"d","d");
+	    	Book book3 = new Book(7l, "Drama", "Description", "d","d",1L,"d",1234,"d","d");
+	    	Book book4 = new Book(8l, "Drama", "Description", "d","d",1L,"d",1234,"d","d");
 	    	doReturn(Arrays.asList(book1, book2,book3,book4)).when(bookRepository).findByCategory("Horror");
 	    	
 	    	List<Book> list12 = new ArrayList<>(3);
@@ -229,11 +234,11 @@ class BookServiceTest {
 	    @DisplayName("Test findById Success")
 	    void testFindByCategoryDrama() {
 	        // Setup our mock repository
-	    	
-	    	Book book1 = new Book(5l, "Drama", "Description", "d","d","d","d","d","d","d");
-	    	Book book2 = new Book(6l, "Drama", "Description", "d","d","d","d","d","d","d");
-	    	Book book3 = new Book(7l, "Drama", "Description", "d","d","d","d","d","d","d");
-	    	Book book4 = new Book(8l, "Drama", "Description", "d","d","d","d","d","d","d");
+	    
+	    	Book book1 = new Book(5l, "Drama", "Description", "d","d",1L,"d",1234,"d","d");
+	    	Book book2 = new Book(6l, "Drama", "Description", "d","d",1L,"d",1234,"d","d");
+	    	Book book3 = new Book(7l, "Drama", "Description", "d","d",1L,"d",1234,"d","d");
+	    	Book book4 = new Book(8l, "Drama", "Description", "d","d",1L,"d",1234,"d","d");
 	    	doReturn(Arrays.asList(book1, book2,book3,book4)).when(bookRepository).findByCategory("Drama");
 	    	
 	    	List<Book> list12 = new ArrayList<>(3);
@@ -248,4 +253,42 @@ class BookServiceTest {
 	        Assertions.assertEquals(4, list12.size(), "findAll should return 4 widgets");
 
 	    }
+	    
+		
+		
+		  @Test
+		    @DisplayName("Test findById Success")
+		    void testFindByAllCategory() {
+			  Book book1 = new Book(5l, "Drama", "Description", "d","d",1L,"d",1234,"d","d");
+		    	Book book2 = new Book(6l, "Drama", "Description", "d","d",1L,"d",1234,"d","d");
+
+				doReturn(Arrays.asList(book1, book2)).when(bookRepository).findByCategory("Drama");
+
+				// Execute the service call
+				List<Book> widgets = bookservice.getAllBooksByCategory("Drama");
+
+				// Assert the response
+				Assertions.assertEquals(2, widgets.size(), "findAll should return 2 widgets");
+
+		    }
+		  
+	
+		
+		  
+		  @Test
+		    @DisplayName("Test findById Success")
+		    void testAdvanceSearch() {
+			  Book book1 = new Book(5l, "Drama", "Description", "d","d",1L,"d",1234,"d","d");
+		    	Book book2 = new Book(6l, "Drama", "Description", "d","d",1L,"d",1234,"d","d");
+
+				doReturn(Arrays.asList(book1, book2)).when(bookRepository).search("Drama");
+
+				// Execute the service call
+				List<Book> widgets = bookservice.advanceSearch("Drama");
+
+				// Assert the response
+				Assertions.assertEquals(2, widgets.size(), "findAll should return 2 widgets");
+
+		    }
+		
 }

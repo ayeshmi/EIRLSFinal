@@ -45,6 +45,8 @@ public class VideoReservation {
 	private String lendingStatus;
 	
 	private int overduePayment;
+	@Size(max = 750)
+	private String image;
 	
 	public VideoReservation() {
 		
@@ -154,6 +156,14 @@ public class VideoReservation {
 
 	public void setVideoId(Long videoId) {
 		this.videoId = videoId;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
 	}
 	
 	

@@ -6,6 +6,7 @@ import java.time.temporal.ChronoUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +20,8 @@ import com.example.demo.dto.MessageResponse;
 import com.example.demo.model.Paymentdto;
 import com.example.demo.model.ReservationDetails;
 import com.example.demo.model.User;
+import com.example.demo.model.Video;
+import com.example.demo.model.Book;
 import com.example.demo.model.VideoReservation;
 import com.example.demo.repository.BookReservationRepository;
 import com.example.demo.repository.PaymentRepository;
@@ -55,6 +58,37 @@ public class ReservationController {
 	public ResponseEntity<Object> addBookReservation(@RequestBody BookReservation bookReservation) {
 		MessageResponse message = reservationService.addToCartBookReservation(bookReservation);
 		if (message.getMessage().equals("Your Book Lending is Successfully Added!")) {
+			return ResponseEntity.ok(message);
+		} else {
+			return ResponseEntity.badRequest().body(message);
+		}
+	}
+	
+	@PostMapping("/bookOrder")
+	public ResponseEntity<Object> addBookOrder(@RequestBody BookReservation bookReservation) {
+		System.out.println("order called");
+		MessageResponse message = reservationService.addBookOrder(bookReservation);
+		if (message.getMessage().equals("Order is added!")) {
+			return ResponseEntity.ok(message);
+		} else {
+			return ResponseEntity.badRequest().body(message);
+		}
+	}
+	
+	@PostMapping("/onlineBookReservation")
+	public ResponseEntity<Object> addBookReservationOnline(@RequestBody BookReservation bookReservation) {
+		MessageResponse message = reservationService.addBookReservationOnline(bookReservation);
+		if (message.getMessage().equals("Your Online Book Lending is Successfully Added to Cart!")) {
+			return ResponseEntity.ok(message);
+		} else {
+			return ResponseEntity.badRequest().body(message);
+		}
+	}
+	
+	@PostMapping("/onlineVideoReservation")
+	public ResponseEntity<Object> addVideoReservationOnline(@RequestBody VideoReservation videoReservation) {
+		MessageResponse message = reservationService.addvideoReservationOnline(videoReservation);
+		if (message.getMessage().equals("Your video Lending is Successfully Added!")) {
 			return ResponseEntity.ok(message);
 		} else {
 			return ResponseEntity.badRequest().body(message);
@@ -228,7 +262,10 @@ public class ReservationController {
 
 	@GetMapping("/viewBlackListCustomers")
 	public ResponseEntity<Object> viewBlackListCustomers() {
+		
+		System.out.println("called12356");
 		List<User> users=reservationService.viewBlackListCustomers();
+		
 		if(users.size() != 0) {
 			return ResponseEntity.ok(users);	
 		}else {
@@ -242,6 +279,63 @@ public class ReservationController {
 		List<User> users=reservationService.viewBlackListCustomers();
 		if(users.size() != 0) {
 			return ResponseEntity.ok(users);	
+		}else {
+			MessageResponse message =new MessageResponse("No Records found!");
+			return ResponseEntity.badRequest().body(message);
+		}
+	}
+	
+	@GetMapping("/viewAllReservationDetails")
+	public ResponseEntity<Object> viewAllReservationDetails() {
+		List<ReservationDetails> users=reservationService.getReseravtionDetails();
+		if(users.size() != 0) {
+			return ResponseEntity.ok(users);	
+		}else {
+			MessageResponse message =new MessageResponse("No Records found!");
+			return ResponseEntity.badRequest().body(message);
+		}
+	}
+	
+	@GetMapping("/getAllBookReservationOnline/{id}")
+	public ResponseEntity<Object> getAllBookReservationOnline(@PathVariable("id") Long id) {
+		List<Book> users=reservationService.getAllBookReservationOnline(id);
+		if(users.size() != 0) {
+			return ResponseEntity.ok(users);	
+		}else {
+			MessageResponse message =new MessageResponse("No Records found!");
+			return ResponseEntity.badRequest().body(message);
+		}
+	}
+	
+	@GetMapping("/getAllVideoReservationOnline/{id}")
+	public ResponseEntity<Object> getAllVideoReservationOnline(@PathVariable("id") Long id) {
+		List<Video> videos=reservationService.getAllVideoReservationOnline(id);
+		if(videos.size() != 0) {
+			return ResponseEntity.ok(videos);	
+		}else {
+			MessageResponse message =new MessageResponse("No Records found!");
+			return ResponseEntity.badRequest().body(message);
+		}
+	}
+	
+	@DeleteMapping("/deleteBookFromCart/{id}")
+	public ResponseEntity<Object> deleteBookFromCart(@PathVariable("id") Long id) {
+		System.out.println("dsdsdsd"+id);
+		MessageResponse users=reservationService.deleteBookFromCart(id);
+		if(users != null) {
+			return ResponseEntity.ok(users);	
+		}else {
+			MessageResponse message =new MessageResponse("No Records found!");
+			return ResponseEntity.badRequest().body(message);
+		}
+	}
+	
+	@GetMapping("/getOrderBooks/{id}")
+	public ResponseEntity<Object> getOrderBooks(@PathVariable("id") Long id) {
+		System.out.println("order books called");
+		List<Book> videos=reservationService.getOrderBooks(id);
+		if(videos.size() != 0) {
+			return ResponseEntity.ok(videos);	
 		}else {
 			MessageResponse message =new MessageResponse("No Records found!");
 			return ResponseEntity.badRequest().body(message);

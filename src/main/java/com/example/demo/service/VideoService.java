@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.example.demo.dto.MessageResponse;
+import com.example.demo.model.Book;
 import com.example.demo.model.User;
 import com.example.demo.model.Video;
 import com.example.demo.repository.UserRepository;
@@ -40,35 +41,12 @@ public class VideoService {
 		return videos;
 	}
 
-	// get book by id rest api
-	@GetMapping("/selectedVideo/{category}")
+	
 	public List<Video> getVideosByCategory(String category) {
 
-		List<Video> list = new ArrayList<>(2);
-		List<Video> array = videoRepository.findByCategory(category);
-		// array.get(1);
-		list.add(array.get(0));
-		list.add(array.get(1));
-		list.add(array.get(2));
-		System.out.println("Array Size123" + list.size());
-
-		SimpleDateFormat myFormat = new SimpleDateFormat("dd-MM-yyyy");
-		String dateBeforeString = "31-01-2014";
-		String dateAfterString = "02-02-2014";
-
-		try {
-			Date dateBefore = myFormat.parse(dateBeforeString);
-			Date dateAfter = myFormat.parse(dateAfterString);
-			long difference = dateAfter.getTime() - dateBefore.getTime();
-			float daysBetween = (difference / (1000 * 60 * 60 * 24));
-			/*
-			 * You can also convert the milliseconds to days using this method float
-			 * daysBetween = TimeUnit.DAYS.convert(difference, TimeUnit.MILLISECONDS)
-			 */
-			System.out.println("Number of Days between dates: " + daysBetween);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	
+		List<Video> list = videoRepository.findByCategory(category);
+	
 		return list;
 	}
 
@@ -126,11 +104,11 @@ public class VideoService {
 		int days=(int) ChronoUnit.DAYS.between(localDate, LocalDate.now());
 		List<Video> array=null;
 		if(days >= 6593) {
-			 array = videoRepository.getVideoAgeLimitation(category,"Yes");
+			 array = videoRepository.getVideoAgeLimitation(category,"No");
 		}
 		else {
 			System.out.println("funcann dd"+days);
-			array = videoRepository.getVideoAgeLimitation(category,"No");
+			array = videoRepository.getVideoAgeLimitation(category,"Yes");
 		}
 		
 		
@@ -141,6 +119,25 @@ public class VideoService {
 		list.add(array.get(3));
 		System.out.println("Array Size2" + list.size());
 		return list;
+	}
+	
+	public List<Video> getVideosByRomanceUser(String category,Long id) {
+		
+		User user=userRepository.findById(id).orElseThrow();
+		String dateOfBirth=user.getDateOfBirth();
+		LocalDate localDate = LocalDate.parse(dateOfBirth);
+		
+		int days=(int) ChronoUnit.DAYS.between(localDate, LocalDate.now());
+		List<Video> array=null;
+		if(days >= 6593) {
+			 array = videoRepository.findAll();
+		}
+		else {
+			System.out.println("funcann dd"+days);
+			array = videoRepository.getVideoAgeLimitation(category,"No");
+		}
+		
+		return array;
 	}
 
 	public Video getVideoById(Long id) {
@@ -153,6 +150,16 @@ public class VideoService {
 		}
 
 		return video;
+	}
+
+
+	public MessageResponse addVideoCopy(Video book) {
+		Video book1=videoRepository.findByTitle(book.getTitle());
+		int total=book1.getNumberOfCopies() +book.getNumberOfCopies();
+		book1.setNumberOfCopies(total);
+		videoRepository.save(book1);
+		MessageResponse messageResponse=new MessageResponse("Video copies are increased!");
+		return messageResponse;
 	}
 
 }

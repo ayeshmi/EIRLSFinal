@@ -58,6 +58,7 @@ public class ReservationService {
 		int count = reservationRepository.countOfBooks(bookReservation.getEmail());
 
 		bookReservation.setLendingStatus("cart");
+		System.out.println("image is"+bookReservation.getImage());
 
 		if (count == numberOfBooks || count >= numberOfBooks) {
 
@@ -249,11 +250,12 @@ public class ReservationService {
 		List<User> users = new ArrayList<>();
 		try {
 			List<String> userIds = bookReservationRepository.getBlackListCutomers();
-			List<Long> userIdsV = (List<Long>) videoReservationRepository.getBlackListCutomers();
-			System.out.println("users " + userIds.get(1));
+			System.out.println("balck lsit"+userIds.size());
+			List<Long> userIdsV = videoReservationRepository.getBlackListCutomers();
+			System.out.println("users " + userIds.get(0));
 
 			
-			for (int i = 1; i < userIds.size(); i++) {
+			for (int i = 0; i < userIds.size(); i++) {
 
 				long userID = Long.parseLong(userIds.get(i));
 				User user = userRepository.findById(userID).orElseThrow();
@@ -262,11 +264,19 @@ public class ReservationService {
 				users.add(user);
 
 			}
-			for (int i = 1; i < userIdsV.size(); i++) {
+			for (int i = 0; i < userIdsV.size(); i++) {
 				User user = userRepository.findById(userIdsV.get(i)).orElseThrow();
 				user.setStatus("blackList");
 				userRepository.save(user);
-				users.add(user);
+				
+				for(int j=0;j<users.size();j++) {
+					if(user.getId()!= users.get(i).getId()) {
+						users.add(user);
+					}else {
+						System.out.println("user is already in the system");
+					}
+				}
+				
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -281,6 +291,17 @@ public class ReservationService {
 		try {
 			
 			videoReservation = videoReservationRepository.getAllCartVideoReservation(email);
+	}catch(Exception e) {
+		e.printStackTrace();
+	}
+		return videoReservation;
+	}
+	
+	public List<ReservationDetails> getReseravtionDetails() {
+		List<ReservationDetails> videoReservation=null;
+		try {
+			
+			videoReservation = reservationRepository.findAll();
 	}catch(Exception e) {
 		e.printStackTrace();
 	}
@@ -319,5 +340,126 @@ public class ReservationService {
 		
 		return totalCheckoutPrice;
 	}
+
+	public MessageResponse deleteBookFromCart(Long id) {
+		MessageResponse message=null;
+		BookReservation bookReservation = bookReservationRepository.findById(id).orElseThrow();
+		bookReservationRepository.delete(bookReservation);
+		message=new MessageResponse("Book is deleted from the cart.");
+		return message;
+	}
+
+	public MessageResponse addBookReservationOnline(BookReservation bookReservation) {
+		LocalDate localDate = LocalDate.now();
+		ReservationDetails bookReservationS = reservationRepository.findByUsername(bookReservation.getEmail());
+
+		int days = bookReservationS.getBookDurationDays();
+		int numberOfBooks = bookReservationS.getNumberOfBooks();
+
+		LocalDate newDate = localDate.plusDays(days);
+
+		bookReservation.setDate(localDate.toString());
+		bookReservation.setReturnDate(newDate.toString());
+
+		int count = reservationRepository.countOfBooks(bookReservation.getEmail());
+
+		bookReservation.setLendingStatus("cart");
+		bookReservation.setUsername("online");
+		System.out.println("image is"+bookReservation.getImage());
+
+		if (count == numberOfBooks || count >= numberOfBooks) {
+
+			return new MessageResponse("Your Book Lending Limitation is Exceeded!");
+		}
+
+		else {
+			
+				bookReservationRepository.save(bookReservation);
+				return new MessageResponse("Your Online Book Lending is Successfully Added to Cart!");
+			
+	}
+	}
+
+	public List<Book> getAllBookReservationOnline(Long id) {
+		List<Book> books=new ArrayList<>();
+		List<BookReservation> bookReservation = bookReservationRepository.getAllBookOnline(id);
+		for(int i=0;i<bookReservation.size();i++) {
+			Long id1=Long.parseLong(bookReservation.get(i).getBookId());
+			
+			Book book = bookRepository.findById(id1).orElseThrow();	
+			System.out.println("ahjfaf"+book);
+			books.add(book);
+		}
+		
+		return books;
+	}
+	
+	public List<Video> getAllVideoReservationOnline(Long id) {
+		List<Video> videos=new ArrayList<>();
+		List<VideoReservation> videoReservation = videoReservationRepository.getAllVideoOnline(id);
+		for(int i=0;i<videoReservation.size();i++) {
+			
+			Video video = videoRepository.findById(videoReservation.get(i).getVideoId()).orElseThrow();	
+			System.out.println("ahjfaf"+video);
+			videos.add(video);
+		}
+		
+		return videos;
+	}
+
+	public MessageResponse addvideoReservationOnline(VideoReservation videoReservation) {
+		LocalDate localDate = LocalDate.now();
+		ReservationDetails bookReservationS = reservationRepository.findByUsername(videoReservation.getEmail());
+
+		int days = bookReservationS.getBookDurationDays();
+		int numberOfBooks = bookReservationS.getNumberOfBooks();
+
+		LocalDate newDate = localDate.plusDays(days);
+
+		videoReservation.setDate(localDate.toString());
+		videoReservation.setReturnDate(newDate.toString());
+
+		int count = reservationRepository.countOfVideos(videoReservation.getEmail());
+
+		videoReservation.setLendingStatus("cart");
+		videoReservation.setUsername("online");
+		System.out.println("image is"+videoReservation.getImage());
+
+		if (count == numberOfBooks || count >= numberOfBooks) {
+
+			return new MessageResponse("Your Book Lending Limitation is Exceeded!");
+		}
+
+		else {
+			
+				videoReservationRepository.save(videoReservation);
+				return new MessageResponse("Your video Lending is Successfully Added!");
+			
+	}
+	}
+
+	public MessageResponse addBookOrder(BookReservation bookReservation) {
+		bookReservation.setUsername("order");
+		bookReservationRepository.save(bookReservation);
+		return new MessageResponse("Order is added!"); 
+	}
+
+	public List<Book> getOrderBooks(Long id) {
+		List<Book> books=new ArrayList<>();
+		List<BookReservation> bookReservation = bookReservationRepository.getAllOrderBooks(id);
+		for(int i=0;i<bookReservation.size();i++) {
+			Long id1=Long.parseLong(bookReservation.get(i).getBookId());
+			
+			Book book = bookRepository.findById(id1).orElseThrow();	
+			System.out.println("ahjfaf"+book);
+			books.add(book);
+		}
+		
+		return books;
+	
+	}
+
+	
+	
 	
 }

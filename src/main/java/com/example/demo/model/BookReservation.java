@@ -45,6 +45,8 @@ public class BookReservation {
 	private String lendingStatus;
 	
 	private int overduePayment;
+	@Size(max = 750)
+	private String image;
 	
 	
 	
@@ -154,6 +156,14 @@ public class BookReservation {
 
 	public void setOverduePayment(int overduePayment) {
 		this.overduePayment = overduePayment;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
 	}
 	
 	

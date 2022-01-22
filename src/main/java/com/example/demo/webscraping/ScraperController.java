@@ -23,6 +23,12 @@ public class ScraperController {
         return  scraperService.getVehicleByModel();
     }
     
+    @GetMapping(path = "/OtherVideoWebsitesDetails")
+    public List<VideoDTO> getVideoDetails() {
+    	System.out.println("called");
+        return  scraperService.getVideos();
+    }
+    
     @GetMapping(path = "/readCSV")
     public List<BookIntegration> readCSVFile() {
     	System.out.println("called");
@@ -35,6 +41,21 @@ public class ScraperController {
 		}
          return books;
     }
+    
+    @GetMapping(path = "/readVideoCSV")
+    public List<VideoDTO> readVideoCSVFile() {
+    	System.out.println("called");
+    	List<VideoDTO> books=null;
+         try {
+        	 books=scraperService.CSvFileReaderVideo();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+         return books;
+    }
+    
+    
     
     
    

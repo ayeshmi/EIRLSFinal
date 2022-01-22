@@ -142,5 +142,19 @@ public class FileService {
 		System.out.println("profile pic is updated");
 		return user;
 	}
+
+
+	public Book uploadOnlineBook(MultipartFile file, String title) {
+		String fileName = fileStorageService.storeFile(file);
+		String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+				.path("/api/auth/video/") 
+				.path(fileName)
+				.toUriString();
+		Book book=bookRepository.findByTitle(title);
+		//Video video = new Video(title, fileDownloadUri);
+		book.setOnlineBook(fileDownloadUri);
+		bookRepository.save(book);
+		return book;
+	}
 	
 }

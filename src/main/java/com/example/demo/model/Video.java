@@ -28,7 +28,7 @@ public class Video {
 	@Size(max = 50)
 	private String date;
 
-	@Size(max = 500)
+	@Size(max = 1000)
 	private String description;
 
 	@Size(max = 750)

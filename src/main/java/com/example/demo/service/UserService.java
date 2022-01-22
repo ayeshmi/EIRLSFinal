@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import com.example.demo.dto.JwtResponse;
 import com.example.demo.dto.LoginRequest;
 import com.example.demo.dto.MessageResponse;
-import com.example.demo.model.Book;
+import com.example.demo.model.ReservationDetails;
 import com.example.demo.model.User;
 import com.example.demo.model.UserDetailsImpl;
 import com.example.demo.repository.UserRepository;
@@ -89,13 +89,25 @@ public class UserService {
 
 		try {
 			User user = userRepository.findById(id).orElseThrow();
+			ReservationDetails reservation=reservationRepository.findById(id).orElseThrow();
 			userRepository.delete(user);
+			reservationRepository.delete(reservation);
 			messageResponse = new MessageResponse("User is successfully deleted!");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		return messageResponse;
+	}
+	
+	public List<User> advanceUser(String word){
+		List<User> users = null;
+		try {
+			users = userRepository.advanceUsersSearch(word);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return users;
 	}
 
 }

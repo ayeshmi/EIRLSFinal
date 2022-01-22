@@ -19,6 +19,8 @@ public interface BookRepository extends JpaRepository<Book,Long>  , JpaSpecifica
 	
 	List<Book> findByCategory(String category);
 	
+	Book findByInumber(Long inumber);
+	
 	@Query(value="select * from book b where b.title like %:keyword% or b.book_description like %:keyword% or b.author like %:keyword% or b.category like %:keyword%", nativeQuery = true)
 	List<Book> search(@Param("keyword")String a);
 	

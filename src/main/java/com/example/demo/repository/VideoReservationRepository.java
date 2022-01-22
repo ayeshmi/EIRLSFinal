@@ -36,6 +36,10 @@ VideoReservation findByEmail(String email);
 	
 	@Query(value="select * from video_reservation b where b.email like :keyword and lending_status='cart' and status is null", nativeQuery = true)
 	List<VideoReservation> getAllCartVideoReservation(@Param("keyword")String email);
+
+
+	@Query(value="select * from video_reservation b where b.user_id like :keyword and username='online' and status= 'ongoing' ", nativeQuery = true)
+	List<VideoReservation> getAllVideoOnline(@Param("keyword")Long id);
 	
 	
 	

@@ -72,6 +72,13 @@ public class FileController {
 		return new ResponseEntity<Book>(book,HttpStatus.OK);
 	}
 	
+	@PutMapping("/onlineBook")
+	public ResponseEntity<Book> addOnlineBook(@RequestParam("Video") MultipartFile file,@RequestParam("Title") String title){
+		
+		Book book=fileService.uploadOnlineBook(file, title);
+		return new ResponseEntity<Book>(book,HttpStatus.OK);
+	}
+	
 	
 	
 	@GetMapping("image/{fileName:.+}")

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.MessageResponse;
+import com.example.demo.model.Book;
 import com.example.demo.model.Video;
 import com.example.demo.repository.VideoRepository;
 import com.example.demo.service.VideoService;
@@ -29,7 +30,7 @@ public class VideoController {
 	VideoService videoService;
 	
 	@GetMapping("/AllVideos")
-	public ResponseEntity<Object> getAllVideos(@PathVariable("id") Long id){
+	public ResponseEntity<Object> getAllVideos(){
 		List<Video> list = videoService.getAllVideos();
 		
 		if(list.size() != 0) {
@@ -45,7 +46,7 @@ public class VideoController {
 			@GetMapping("/selectedVideo/{category}")
 			public List<Video> getVideosByCategory(@PathVariable String category){
 				
-				List<Video> list = videoService.getAllVideos();
+				List<Video> list = videoService.getVideosByCategory(category);
 				return list;
 			}
 			
@@ -62,7 +63,8 @@ public class VideoController {
 			}
 			
 			@DeleteMapping("/deleteVideo/{id}")
-			public ResponseEntity<Object> deleteVideo(@PathVariable Long id){
+			public ResponseEntity<Object> deleteVideo(
+					@PathVariable Long id){
 
 				MessageResponse message =videoService.deleteVideo(id);
 				if(message.getMessage().equals("Video is successfully deleted!")){
@@ -88,8 +90,17 @@ public class VideoController {
 			
 			@GetMapping("/RselectedVideoR/{category}/{id}")
 			public List<Video> getVideoByRomance(@PathVariable("category") String category,@PathVariable("id")Long id ) {
-                System.out.println(" called"+id);
+                System.out.println(" calledRomance"+id);
 				List<Video> list = videoService.getVideosByRomance(category,id);
+				System.out.println(" calledRomance11"+list.size());
+				return list;
+			}
+			
+			@GetMapping("/RselectedVideoUser/{category}/{id}")
+			public List<Video> getVideoByRomanceUser(@PathVariable("category") String category,@PathVariable("id")Long id ) {
+                System.out.println(" calledRomance"+id);
+				List<Video> list = videoService.getVideosByRomanceUser(category, id);
+				System.out.println(" calledRomance11"+list.size());
 				return list;
 			}
 			
@@ -101,6 +112,21 @@ public class VideoController {
 				}
 				else {
 					return ResponseEntity.badRequest().body(new MessageResponse("Selected Book is not exit!"));	
+				}
+				
+			}
+			
+			@PostMapping("/addVideoCopy")
+			public ResponseEntity<Object> addBookCopy(@RequestBody Video book){
+				System.out.println("calledrerer");
+				MessageResponse message = videoService.addVideoCopy(book);
+				if(message.getMessage().equals("Video copies are increased!")) {
+					System.out.println("calledrerer");
+					return ResponseEntity.ok(message);
+				}
+				else {
+					System.out.println("calledrerer");
+					return ResponseEntity.badRequest().body(message);
 				}
 				
 			}

@@ -11,9 +11,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(name="book")
-public class Book {
-	
+@Table(name="bookexternal1")
+public class BookExternalSource {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -42,7 +41,7 @@ public class Book {
     private int price;
 
 	@Size(max = 1000)
-	private String bookDescription;
+	private String description;
 	
 	@Size(max = 50)
 	private String date;
@@ -54,13 +53,10 @@ public class Book {
 	@Size(max = 750)
 	private String imageOfVideo;
 	
-	@Size(max = 750)
-	private String onlineBook;
-	
 	@Size(max = 1000)
 	private String bookExcerpt ;
 	
-	public Book(Long id,  String category, String title, String author, String edition,Long iSBNnumber,  String price,int numberOfCopies,String date,String message) {
+	public BookExternalSource(Long id,  String category, String title, String author, String edition,Long iSBNnumber,  String price,int numberOfCopies,String date,String message) {
 		super();
 		this.id = id;
 		this.category = category;
@@ -72,7 +68,7 @@ public class Book {
 		this.message=message;
 	}
 	
-	public Book(String category, String title, String author, Long iSBNnumber,  int numberOfCopies,String date,String message) {
+	public BookExternalSource(String category, String title, String author, Long iSBNnumber,  int numberOfCopies,String date,String message) {
 		
 		this.category = category;
 		this.title = title;
@@ -83,7 +79,7 @@ public class Book {
 		this.message=message;
 	}
 
-	public Book()
+	public BookExternalSource()
 	{
 		
 	}
@@ -163,12 +159,12 @@ public class Book {
 	
 	
 
-	public String getBookDescription() {
-		return bookDescription;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setBookDescription(String bookDescription) {
-		this.bookDescription = bookDescription;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public String getBookExcerpt() {
@@ -203,18 +199,8 @@ public class Book {
 		this.price = price;
 	}
 
-	public String getOnlineBook() {
-		return onlineBook;
-	}
-
-	public void setOnlineBook(String onlineBook) {
-		this.onlineBook = onlineBook;
-	}
-
 	public BooleanSupplier isPresent() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	
 }

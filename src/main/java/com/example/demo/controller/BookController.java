@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.model.Book;
+import com.example.demo.model.BookExternalSource;
 import com.example.demo.dto.MessageResponse;
+import com.example.demo.repository.BookDatabaseRepository;
 import com.example.demo.repository.BookRepository;
 import com.example.demo.service.BookService;
 
@@ -26,6 +28,9 @@ public class BookController {
 
 	@Autowired
 	BookService bookService;
+	
+	@Autowired
+	private BookDatabaseRepository bookDatabaseRepository;
 
 	@GetMapping("/books")
 	public ResponseEntity<Object> getAllBooks() {
@@ -45,7 +50,7 @@ public class BookController {
 	@GetMapping("/selectedBook/{category}")
 	public List<Book> getBooksByCategory(@PathVariable String category) {
 
-		List<Book> list = bookService.getBooksByCategory(category);
+		List<Book> list = bookService.getAllBooksByCategory(category);
 
 		return list;
 	}
@@ -145,6 +150,44 @@ public class BookController {
 			return ResponseEntity.badRequest().body(new MessageResponse("Something went wrong, try again!"));
 		}
 
+	}
+	
+	@DeleteMapping("/updateBook/{id}")
+	public ResponseEntity<Object> updateBook(@PathVariable Long id,@RequestBody Book book) {
+		MessageResponse message =bookService.updateBook(id,book);
+		if(message.getMessage().equals("Book is successfully updated!")){
+			return ResponseEntity.ok(message);
+		}else {
+			return ResponseEntity.badRequest().body(new MessageResponse("Something went wrong, try again!"));
+		}
+
+	}
+	
+	@PostMapping("/datasource2")
+     void init () {
+		
+		BookExternalSource book=new BookExternalSource();
+		book.setTitle("hello adi");
+		book.setAuthor("Ayeshmmm");
+		book.setCategory("none of your bussiness");
+		book.setDescription("hello");
+		bookDatabaseRepository.save(book);
+		
+	}
+	
+	@PostMapping("/addBookCopy")
+	public ResponseEntity<Object> addBookCopy(@RequestBody Book book){
+		System.out.println("calledrerer");
+		MessageResponse message = bookService.addBookCopy(book);
+		if(message.getMessage().equals("Book copies are increased!")) {
+			System.out.println("calledrerer");
+			return ResponseEntity.ok(message);
+		}
+		else {
+			System.out.println("calledrerer");
+			return ResponseEntity.badRequest().body(message);
+		}
+		
 	}
 
 }

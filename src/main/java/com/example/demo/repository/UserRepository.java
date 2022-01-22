@@ -29,4 +29,7 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
 	
 	@Query(value="select * from users b where b.new_updates like 'yes'", nativeQuery = true)
 	List<User> getUsers();
+	
+	@Query(value="select * from users where email like %:keyword% OR user_type like %:keyword% OR username like %:keyword% ", nativeQuery = true)
+	List<User> advanceUsersSearch(@Param("keyword")String a);
 }
